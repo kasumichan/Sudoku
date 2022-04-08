@@ -3,8 +3,27 @@
 //
 
 #include "Board.h"
+#include <iostream>
 
-Board::Board() {
+
+Board::Board(const vector<vector<int>> &determinedNumList) {
+    for (const auto &determinedNum: determinedNumList) {
+        int x = determinedNum[0];
+        int y = determinedNum[1];
+        int num = determinedNum[2];
+        board[x][y].Set(x, y, x / 3 * 3 + y / 3, x % 3 * 3 + y % 3, true, num);
+    }
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (!board[i][j].IsSet()) {
+                board[i][j].Set(i, j, i / 3 * 3 + j / 3, i % 3 * 3 + j % 3, false);
+            }
+        }
+    }
+
+}
+
+void Board::Init() {
 
     auto it = board.begin();
 
@@ -15,98 +34,49 @@ Board::Board() {
             column[i][j] = (*(it + j)).begin() + i;
         }
     }
+}
 
+void Board::Exclude() {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (!board[i][j].IsDetermined()) {
+                int x = board[i][j].getIdX();
+                int y = board[i][j].getIdY();
+                int block_id = board[i][j].getIdBlock();
+                int block_loc = board[i][j].getIdBlockLoc();
+                for (int k = 0; k < 9; ++k) {
+                    if (board[k][y].IsDetermined()) {
+                        board[i][j].ExcludeNum(board[k][y].getNum());
+                    }
+                }
+                for (int k = 0; k < 9; ++k) {
+                    if (board[x][k].IsDetermined()) {
+                        board[i][j].ExcludeNum(board[x][k].getNum());
+                    }
+                }
+                for (int k = 0; k < 9; ++k) {
+                    if (board[block_id / 3 * 3 + k % 3][block_id % 3 * 3 + k / 3].IsDetermined()) {
+                        board[i][j].ExcludeNum(board[block_id / 3 * 3 + k % 3][block_id % 3 * 3 + k / 3].getNum());
+                    }
+                }
+            }
+        }
+    }
+}
 
-//    block[0] = {(*(it + 0)).begin() + 0,
-//                (*(it + 0)).begin() + 1,
-//                (*(it + 0)).begin() + 2,
-//                (*(it + 1)).begin() + 0,
-//                (*(it + 1)).begin() + 1,
-//                (*(it + 1)).begin() + 2,
-//                (*(it + 2)).begin() + 0,
-//                (*(it + 2)).begin() + 1,
-//                (*(it + 2)).begin() + 2};
-//
-//    block[1] = {(*(it + 0)).begin() + 3,
-//                (*(it + 0)).begin() + 4,
-//                (*(it + 0)).begin() + 5,
-//                (*(it + 1)).begin() + 3,
-//                (*(it + 1)).begin() + 4,
-//                (*(it + 1)).begin() + 5,
-//                (*(it + 2)).begin() + 3,
-//                (*(it + 2)).begin() + 4,
-//                (*(it + 2)).begin() + 5};
-//
-//    block[2] = {(*(it + 0)).begin() + 6,
-//                (*(it + 0)).begin() + 7,
-//                (*(it + 0)).begin() + 8,
-//                (*(it + 1)).begin() + 6,
-//                (*(it + 1)).begin() + 7,
-//                (*(it + 1)).begin() + 8,
-//                (*(it + 2)).begin() + 6,
-//                (*(it + 2)).begin() + 7,
-//                (*(it + 2)).begin() + 8};
-//
-//    block[3] = {(*(it + 3)).begin() + 0,
-//                (*(it + 3)).begin() + 1,
-//                (*(it + 3)).begin() + 2,
-//                (*(it + 4)).begin() + 0,
-//                (*(it + 4)).begin() + 1,
-//                (*(it + 4)).begin() + 2,
-//                (*(it + 5)).begin() + 0,
-//                (*(it + 5)).begin() + 1,
-//                (*(it + 5)).begin() + 2};
-//
-//    block[4] = {(*(it + 3)).begin() + 3,
-//                (*(it + 3)).begin() + 4,
-//                (*(it + 3)).begin() + 5,
-//                (*(it + 4)).begin() + 3,
-//                (*(it + 4)).begin() + 4,
-//                (*(it + 4)).begin() + 5,
-//                (*(it + 5)).begin() + 3,
-//                (*(it + 5)).begin() + 4,
-//                (*(it + 5)).begin() + 5};
-//
-//    block[5] = {(*(it + 3)).begin() + 6,
-//                (*(it + 3)).begin() + 7,
-//                (*(it + 3)).begin() + 8,
-//                (*(it + 4)).begin() + 6,
-//                (*(it + 4)).begin() + 7,
-//                (*(it + 4)).begin() + 8,
-//                (*(it + 5)).begin() + 6,
-//                (*(it + 5)).begin() + 7,
-//                (*(it + 5)).begin() + 8};
-//
-//    block[6] = {(*(it + 6)).begin() + 0,
-//                (*(it + 6)).begin() + 1,
-//                (*(it + 6)).begin() + 2,
-//                (*(it + 7)).begin() + 0,
-//                (*(it + 7)).begin() + 1,
-//                (*(it + 7)).begin() + 2,
-//                (*(it + 8)).begin() + 0,
-//                (*(it + 8)).begin() + 1,
-//                (*(it + 8)).begin() + 2};
-//
-//    block[7] = {(*(it + 6)).begin() + 3,
-//                (*(it + 6)).begin() + 4,
-//                (*(it + 6)).begin() + 5,
-//                (*(it + 7)).begin() + 3,
-//                (*(it + 7)).begin() + 4,
-//                (*(it + 7)).begin() + 5,
-//                (*(it + 8)).begin() + 3,
-//                (*(it + 8)).begin() + 4,
-//                (*(it + 8)).begin() + 5};
-//
-//    block[8] = {(*(it + 6)).begin() + 6,
-//                (*(it + 6)).begin() + 7,
-//                (*(it + 6)).begin() + 8,
-//                (*(it + 7)).begin() + 6,
-//                (*(it + 7)).begin() + 7,
-//                (*(it + 7)).begin() + 8,
-//                (*(it + 8)).begin() + 6,
-//                (*(it + 8)).begin() + 7,
-//                (*(it + 8)).begin() + 8};
-
-
-
+void Board::Print() {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (board[i][j].IsDetermined()) {
+                std::cout << i << "\t" << j << "\t" << board[i][j].getNum();
+            } else {
+                std::cout << i << "\t" << j;
+                std::cout << "\t" << "Possible: ";
+                for (int num: board[i][j].getPossibleNumList()) {
+                    std::cout << "\t" << num;
+                }
+            }
+            std::cout << std::endl;
+        }
+    }
 }

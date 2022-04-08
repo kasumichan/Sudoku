@@ -20,10 +20,14 @@ private:
     vector<vector<vector<Cell>::iterator>> row = vector<vector<vector<Cell>::iterator>>
             (9, vector<vector<Cell>::iterator>(9));
 
-public:
-    Board();
 
+    void Init();
 public:
+    explicit Board(const vector<vector<int>> &determinedNumList);
+
+    void Exclude();
+
+    void Print();
 
 };
 

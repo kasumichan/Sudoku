@@ -18,6 +18,14 @@ private:
     int id_y;
     int id_block;
     int id_block_loc;
+public:
+    void setIsDetermined(bool isDetermined);
+
+    void setNum(int num);
+
+    void setPossibleNumList(const vector<int> &possibleNumList);
+
+private:
     bool isDetermined;
     int num;
     vector<int> possibleNumList;

@@ -9,6 +9,8 @@
 
 class Board {
 private:
+
+    int totalDetermined;
     vector<vector<Cell>> board = vector<vector<Cell>>(9, vector<Cell>(9));
 
     vector<vector<vector<Cell>::iterator>> block = vector<vector<vector<Cell>::iterator>>
@@ -22,10 +24,19 @@ private:
 
 
     void Init();
+
 public:
     explicit Board(const vector<vector<int>> &determinedNumList);
 
-    void Exclude();
+    void UpdatePossibleNumList();
+
+    vector<int> FindFullHouse();
+
+    vector<int> FindHiddenSingle();
+
+    vector<int> FindNakedSingle();
+
+    void run();
 
     void Print();
 

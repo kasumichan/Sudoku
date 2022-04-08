@@ -10,7 +10,7 @@ int main() {
 
     vector<vector<int>> a;
 
-    ifstream in("test.txt");
+    ifstream in("test2.txt");
     string line;
 
     if (in) {
@@ -28,8 +28,7 @@ int main() {
     }
 
     Board board(a);
-    board.Exclude();
-    board.Print();
-
+    board.UpdatePossibleNumList();
+    board.run();
     return 0;
 }

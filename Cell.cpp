@@ -59,3 +59,15 @@ int Cell::getNum() const {
 const vector<int> &Cell::getPossibleNumList() const {
     return possibleNumList;
 }
+
+void Cell::setIsDetermined(bool isDetermined) {
+    Cell::isDetermined = isDetermined;
+}
+
+void Cell::setNum(int num) {
+    Cell::num = num;
+}
+
+void Cell::setPossibleNumList(const vector<int> &possibleNumList) {
+    Cell::possibleNumList = possibleNumList;
+}

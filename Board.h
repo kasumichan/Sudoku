@@ -6,6 +6,7 @@
 #define SUDOKU_BOARD_H
 
 #include "Cell.h"
+#include <set>
 
 class Board {
 private:
@@ -38,7 +39,11 @@ public:
 
     void run();
 
+    bool IsValid();
+
     void Print();
+
+
 
 };
 

@@ -2,33 +2,18 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <QApplication>
 #include "Board.h"
+#include "UI/MainWindow.h"
 
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
 
-    vector<vector<int>> a;
 
-    ifstream in("test2.txt");
-    string line;
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
 
-    if (in) {
-        while (getline(in, line)) {
-            int b;
-            vector<int> temp;
-            stringstream ss(line);
-            while (ss >> b) {
-                temp.push_back(b);
-            }
-            a.push_back(temp);
-        }
-    } else {
-        cout << "no such file" << endl;
-    }
-
-    Board board(a);
-    board.UpdatePossibleNumList();
-    board.run();
-    return 0;
+    return a.exec();
 }

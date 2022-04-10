@@ -3,6 +3,7 @@
 //
 
 #include "Board.h"
+#include <sstream>
 #include <iostream>
 
 
@@ -21,21 +22,9 @@ Board::Board(const vector<vector<int>> &determinedNumList) {
             }
         }
     }
-
+    UpdatePossibleNumList();
 }
 
-void Board::Init() {
-
-    auto it = board.begin();
-
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-            block[i / 3 * 3 + j / 3][i % 3 * 3 + j % 3] = (*(it + i)).begin() + j;
-            row[i][j] = (*(it + i)).begin() + j;
-            column[i][j] = (*(it + j)).begin() + i;
-        }
-    }
-}
 
 void Board::UpdatePossibleNumList() {
     for (int i = 0; i < 9; ++i) {
@@ -100,9 +89,9 @@ vector<int> Board::FindFullHouse() {
             }
         }
         if (count == 1 && index != -1) {
-            std::cout << "There is only " << all[0] << " left in this row\t";
+//            std::cout << "There is only " << all[0] << " left in this row\t";
 //            std::cout << "Full House Found" << "\t" << "r" << i + 1 << "c" << index + 1 << ": " << all[0] << std::endl;
-            return {i, index, all[0]};
+            return {i, index, all[0], 0};
         }
     }
 
@@ -123,9 +112,9 @@ vector<int> Board::FindFullHouse() {
             }
         }
         if (count == 1 && index != -1) {
-            std::cout << "There is only " << all[0] << " left in this column\t";
+//            std::cout << "There is only " << all[0] << " left in this column\t";
 //            std::cout << "Full House Found" << "\t" << "r" << index + 1 << "c" << j + 1 << ": " << all[0] << std::endl;
-            return {index, j, all[0]};
+            return {index, j, all[0], 1};
         }
     }
 
@@ -147,10 +136,10 @@ vector<int> Board::FindFullHouse() {
             }
         }
         if (count == 1 && index != -1) {
-            std::cout << "There is only " << all[0] << " left in this block\t";
+//            std::cout << "There is only " << all[0] << " left in this block\t";
 //            std::cout << "Full House Found" << "\t" << "r" << i / 3 * 3 + index / 3 + 1 << "c"
 //                      << i % 3 * 3 + index % 3 + 1 << ": " << all[0] << std::endl;
-            return {i / 3 * 3 + index / 3, i % 3 * 3 + index % 3, all[0]};
+            return {i / 3 * 3 + index / 3, i % 3 * 3 + index % 3, all[0], 2};
         }
     }
 
@@ -175,10 +164,10 @@ vector<int> Board::FindHiddenSingle() {
                 }
             }
             if (count == 1) {
-                std::cout << "In this row, " << num << " can only be placed here\t";
+//                std::cout << "In this row, " << num << " can only be placed here\t";
 //                std::cout << "Hidden Single Found" << "\t" << "r" << i + 1 << "c" << index + 1 << ": " << num
 //                          << std::endl;
-                return {i, index, num};
+                return {i, index, num, 0};
             }
 
         }
@@ -202,10 +191,10 @@ vector<int> Board::FindHiddenSingle() {
                 }
             }
             if (count == 1) {
-                std::cout << "In this column, " << num << " can only be placed here\t";
+//                std::cout << "In this column, " << num << " can only be placed here\t";
 //                std::cout << "Hidden Single Found" << "\t" << "r" << index + 1 << "c" << j + 1 << ": " << num
 //                          << std::endl;
-                return {index, j, num};
+                return {index, j, num, 1};
             }
 
         }
@@ -230,10 +219,10 @@ vector<int> Board::FindHiddenSingle() {
                 }
             }
             if (count == 1) {
-                std::cout << "In this block, " << num << " can only be placed here\t";
+//                std::cout << "In this block, " << num << " can only be placed here\t";
 //                std::cout << "Hidden Single Found" << "\t" << "r" << i / 3 * 3 + index / 3 + 1 << "c"
 //                          << i % 3 * 3 + index % 3 + 1 << ": " << num << std::endl;
-                return {i / 3 * 3 + index / 3, i % 3 * 3 + index % 3, num};
+                return {i / 3 * 3 + index / 3, i % 3 * 3 + index % 3, num, 2};
             }
         }
     }
@@ -244,7 +233,8 @@ vector<int> Board::FindNakedSingle() {
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
             if (!board[i][j].IsDetermined() && board[i][j].getPossibleNumList().size() == 1) {
-                std::cout << "In this cell, nothing but " << board[i][j].getPossibleNumList()[0] << " can be placed here\t";
+//                std::cout << "In this cell, nothing but " << board[i][j].getPossibleNumList()[0]
+//                          << " can be placed here\t";
 //                std::cout << "Naked Single Found" << "\t" << "r" << i + 1 << "c" << j + 1 << ": "
 //                          << board[i][j].getPossibleNumList()[0] << std::endl;
                 return {i, j, board[i][j].getPossibleNumList()[0]};
@@ -254,50 +244,118 @@ vector<int> Board::FindNakedSingle() {
     return {};
 }
 
-void Board::run() {
-    while (totalDetermined != 81) {
-        auto res = FindFullHouse();
-        if (!res.empty()) {
-            board[res[0]][res[1]].setNum(res[2]);
-            board[res[0]][res[1]].setIsDetermined(true);
-            UpdatePossibleNumList();
-            ++totalDetermined;
-            std::cout << "Full House Found" << "\t" << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
-                      << std::endl;
-            continue;
-        }
+Message Board::run() {
 
-        res = FindHiddenSingle();
-        if (!res.empty()) {
-            board[res[0]][res[1]].setNum(res[2]);
-            board[res[0]][res[1]].setIsDetermined(true);
-            UpdatePossibleNumList();
-            ++totalDetermined;
-            std::cout << "Hidden House Found" << "\t" << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
-                      << std::endl;
-            continue;
-        }
-
-        res = FindNakedSingle();
-        if (!res.empty()) {
-            board[res[0]][res[1]].setNum(res[2]);
-            board[res[0]][res[1]].setIsDetermined(true);
-            ++totalDetermined;
-            UpdatePossibleNumList();
-            std::cout << "Naked House Found" << "\t" << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
-                      << std::endl;
-            continue;
-        }
+    if (!IsValid()) {
+        return Message{{}, "invalid"};
+    }
+    if (idk()) {
+        return Message{{}, "idk"};
     }
 
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-            std::cout << board[i][j].getNum() << "  ";
+    std::stringstream ss;
+
+    auto res = FindFullHouse();
+    if (!res.empty()) {
+        board[res[0]][res[1]].setNum(res[2]);
+        board[res[0]][res[1]].setIsDetermined(true);
+        UpdatePossibleNumList();
+        ++totalDetermined;
+        ss.str("");
+        if (res[3] == 0) {
+            ss << "在该行，只有" << res[2] << "剩下" << "\t";
+        } else if (res[3] == 1) {
+            ss << "在该列，只有" << res[2] << "剩下" << "\t";
+        } else {
+            ss << "在该宫，只有" << res[2] << "剩下" << "\t";
         }
-        std::cout << std::endl;
+//        ss << "Full House Found" << "\t";
+        ss << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
+           << std::endl;
+        return Message{{res[0], res[1], res[2]}, ss.str()};
+    }
+
+    res = FindHiddenSingle();
+    if (!res.empty()) {
+        board[res[0]][res[1]].setNum(res[2]);
+        board[res[0]][res[1]].setIsDetermined(true);
+        UpdatePossibleNumList();
+        ++totalDetermined;
+        ss.str("");
+
+        if (res[3] == 0) {
+            ss << "在该行，只有该处能填" << res[2] << "\t";
+        } else if (res[3] == 1) {
+            ss << "在该列，只有该处能填" << res[2] << "\t";
+        } else {
+            ss << "在该宫，只有该处能填" << res[2] << "\t";
+        }
+//        ss << "Hidden House Found" << "\t";
+        ss << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
+           << std::endl;
+        return Message{{res[0], res[1], res[2]}, ss.str()};
+    }
+
+    res = FindNakedSingle();
+    if (!res.empty()) {
+        board[res[0]][res[1]].setNum(res[2]);
+        board[res[0]][res[1]].setIsDetermined(true);
+        ++totalDetermined;
+        UpdatePossibleNumList();
+        ss.str("");
+        ss << "在该单元格只能填" << res[2] << "\t";
+//        ss << "Naked House Found" << "\t";
+        ss << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
+           << std::endl;
+        return Message{{res[0], res[1], res[2]}, ss.str()};
     }
 
 }
+
+//void Board::run() {
+//    while (totalDetermined != 81) {
+//        auto res = FindFullHouse();
+//        if (!res.empty()) {
+//            board[res[0]][res[1]].setNum(res[2]);
+//            board[res[0]][res[1]].setIsDetermined(true);
+//            UpdatePossibleNumList();
+//            ++totalDetermined;
+//            std::cout << "Full House Found" << "\t" << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
+//                      << std::endl;
+//            continue;
+//        }
+//
+//        res = FindHiddenSingle();
+//        if (!res.empty()) {
+//            board[res[0]][res[1]].setNum(res[2]);
+//            board[res[0]][res[1]].setIsDetermined(true);
+//            UpdatePossibleNumList();
+//            ++totalDetermined;
+//            std::cout << "Hidden House Found" << "\t" << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
+//                      << std::endl;
+//            continue;
+//        }
+//
+//        res = FindNakedSingle();
+//        if (!res.empty()) {
+//            board[res[0]][res[1]].setNum(res[2]);
+//            board[res[0]][res[1]].setIsDetermined(true);
+//            ++totalDetermined;
+//            UpdatePossibleNumList();
+//            std::cout << "Naked House Found" << "\t" << "r" << res[0] + 1 << "c" << res[1] + 1 << ":\t" << res[2]
+//                      << std::endl;
+//            continue;
+//        }
+//    }
+//
+//    for (int i = 0; i < 9; ++i) {
+//        for (int j = 0; j < 9; ++j) {
+//            std::cout << board[i][j].getNum() << "  ";
+//        }
+//        std::cout << std::endl;
+//    }
+//
+//}
 
 bool Board::IsValid() {
     // by row
@@ -342,6 +400,16 @@ bool Board::IsValid() {
         }
         if (count != totalNum.size()) {
             return false;
+        }
+    }
+    return true;
+}
+
+bool Board::idk() {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (!board[i][j].IsDetermined() && board[i][j].getPossibleNumList().size() == 1)
+                return false;
         }
     }
     return true;

@@ -3,13 +3,12 @@
 #include <fstream>
 #include <sstream>
 #include <QApplication>
-#include "Board.h"
+#include "Game/Board.h"
 #include "UI/MainWindow.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-
 
     QApplication a(argc, argv);
     QFile qss(":/Resources/myStyle.qss");

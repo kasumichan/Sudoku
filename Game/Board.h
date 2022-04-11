@@ -6,7 +6,7 @@
 #define SUDOKU_BOARD_H
 
 #include "Cell.h"
-#include "Message.h"
+#include "../Message/Message.h"
 #include <set>
 
 class Board {

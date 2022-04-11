@@ -2,26 +2,27 @@
 // Created by 16000 on 2022/4/11.
 //
 
-#ifndef SUDOKU_LEVELSELECTWIDGET_H
-#define SUDOKU_LEVELSELECTWIDGET_H
+#ifndef SUDOKU_LEVELSELECTPANE_H
+#define SUDOKU_LEVELSELECTPANE_H
 
 #include <QGridLayout>
 #include <QPushButton>
 #include <vector>
 #include <string>
-#include "InfoBtn.h"
+#include "../Controller/InfoBtn.h"
+#include "../Message/PuzzleDegree.h"
 
 using std::string;
 using std::vector;
 
-class LevelSelectWidget : public QWidget {
+class LevelSelectPane : public QWidget {
 Q_OBJECT
 private:
     int page;
     int level;
-    string degree;
-    int btnRow;
-    int btnCol;
+    PuzzleDegree degree;
+    int rowCnt;
+    int colCnt;
 public:
     InfoBtn *getOkBtn() const;
 
@@ -32,13 +33,15 @@ private:
     InfoBtn *okBtn;
 
 public:
-    explicit LevelSelectWidget(string degree, QWidget *parent = nullptr);
+    explicit LevelSelectPane(PuzzleDegree degree, QWidget *parent = nullptr);
 
     void initLayout();
 
     void addListener();
 
-    void reset(string degree);
+    void reset(PuzzleDegree degree);
+
+    void setTitle();
 
 private slots:
 
@@ -55,4 +58,4 @@ signals:
 };
 
 
-#endif //SUDOKU_LEVELSELECTWIDGET_H
+#endif //SUDOKU_LEVELSELECTPANE_H

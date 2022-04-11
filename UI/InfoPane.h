@@ -2,15 +2,15 @@
 // Created by 16000 on 2022/4/10.
 //
 
-#ifndef SUDOKU_INFOWIDGET_H
-#define SUDOKU_INFOWIDGET_H
+#ifndef SUDOKU_INFOPANE_H
+#define SUDOKU_INFOPANE_H
 
 #include <QVBoxLayout>
 #include <QLabel>
 #include <string>
 using std::string;
 
-class InfoWidget : public QWidget {
+class InfoPane : public QWidget {
 Q_OBJECT
 private:
     string path;
@@ -24,8 +24,8 @@ private:
     QLabel *tipPanel;
 
 public:
-    explicit InfoWidget(QWidget *parent = nullptr);
+    explicit InfoPane(QWidget *parent = nullptr);
 };
 
 
-#endif //SUDOKU_INFOWIDGET_H
+#endif //SUDOKU_INFOPANE_H

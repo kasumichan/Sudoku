@@ -2,19 +2,19 @@
 // Created by 16000 on 2022/4/8.
 //
 
-#ifndef SUDOKU_BOARDWIDGET_H
-#define SUDOKU_BOARDWIDGET_H
+#ifndef SUDOKU_BOARDPANE_H
+#define SUDOKU_BOARDPANE_H
 
 #include <QGridLayout>
-#include "CellWidget.h"
+#include "../Controller/CellWidget.h"
 
-class BoardWidget : public QWidget {
+class BoardPane : public QWidget {
 Q_OBJECT
 private:
     vector<vector<CellWidget *>> board;
 
 public:
-    explicit BoardWidget(QWidget *parent = nullptr);
+    explicit BoardPane(QWidget *parent = nullptr);
 
     void initLayout();
 
@@ -27,4 +27,4 @@ protected:
 };
 
 
-#endif //SUDOKU_BOARDWIDGET_H
+#endif //SUDOKU_BOARDPANE_H

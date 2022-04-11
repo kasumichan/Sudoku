@@ -2,10 +2,10 @@
 // Created by 16000 on 2022/4/8.
 //
 
-#include "BoardWidget.h"
+#include "BoardPane.h"
 #include <QPainter>
 
-BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent) {
+BoardPane::BoardPane(QWidget *parent) : QWidget(parent) {
     board = vector<vector<CellWidget *>>(9, vector<CellWidget *>(9));
 
     for (int i = 0; i < 9; ++i) {
@@ -14,11 +14,11 @@ BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent) {
         }
     }
 
-    BoardWidget::initLayout();
+    BoardPane::initLayout();
 
 }
 
-void BoardWidget::initLayout() {
+void BoardPane::initLayout() {
     setFixedSize(750,750);
     vector<vector<QGridLayout *>> layoutVec(3, vector<QGridLayout *>(3));
     for (int i = 0; i < 3; ++i) {
@@ -45,17 +45,17 @@ void BoardWidget::initLayout() {
 
     //设置背景黑色
     pal.setColor(QPalette::Background, Qt::black);
-    BoardWidget::setAutoFillBackground(true);
-    BoardWidget::setPalette(pal);
-    BoardWidget::setLayout(layout);
+    BoardPane::setAutoFillBackground(true);
+    BoardPane::setPalette(pal);
+    BoardPane::setLayout(layout);
 
 }
 
-const vector<vector<CellWidget *>> &BoardWidget::getBoard() const {
+const vector<vector<CellWidget *>> &BoardPane::getBoard() const {
     return board;
 }
 
-void BoardWidget::reset() {
+void BoardPane::reset() {
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
             board[i][j]->reset();
@@ -63,7 +63,7 @@ void BoardWidget::reset() {
     }
 }
 
-void BoardWidget::paintEvent(QPaintEvent *event) {
+void BoardPane::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
 //    QPainter painter(this);
 //    painter.setPen(QPen(Qt::black,4));

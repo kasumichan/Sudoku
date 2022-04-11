@@ -25,11 +25,11 @@ void MainWindow::initUI() {
 }
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent), boardData({}) {
-    menubar = new MyMenuBar(this);
-    infoWidget = new InfoWidget(this);
+    menubar = new MenuBarPane(this);
+    infoWidget = new InfoPane(this);
     nextBtn = new QPushButton(this);
     beginBtn = new QPushButton(this);
-    boardWidget = new BoardWidget(this);
+    boardWidget = new BoardPane(this);
     initUI();
     initLayout();
     addListener();

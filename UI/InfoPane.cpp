@@ -2,10 +2,10 @@
 // Created by 16000 on 2022/4/10.
 //
 
-#include "InfoWidget.h"
+#include "InfoPane.h"
 #include <QScrollArea>
 
-InfoWidget::InfoWidget(QWidget *parent) : QWidget(parent) {
+InfoPane::InfoPane(QWidget *parent) : QWidget(parent) {
     info = new QLabel(this);
     info->setText("路径提示");
 //    info->setAlignment(Qt::AlignCenter);
@@ -34,11 +34,11 @@ InfoWidget::InfoWidget(QWidget *parent) : QWidget(parent) {
     setLayout(layout);
 }
 
-const string &InfoWidget::getPath() const {
+const string &InfoPane::getPath() const {
     return path;
 }
 
-void InfoWidget::setPath(const string &path) {
-    InfoWidget::path = path;
+void InfoPane::setPath(const string &path) {
+    InfoPane::path = path;
     tipPanel->setText(QString::fromStdString(path));
 }

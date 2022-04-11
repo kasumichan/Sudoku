@@ -12,14 +12,12 @@ void InfoBtn::mousePressEvent(QMouseEvent *e) {
     if (text() == "确定") {
         emit sendCellData(readData());
     } else {
-        level = std::stoi(InfoBtn::text().toStdString()) - 1;
         emit sendLevel(level);
     }
 }
 
-InfoBtn::InfoBtn(const QString &text, string degree, QWidget *parent)
-        : QPushButton(parent), degree(std::move(degree)), level(0) {
-    InfoBtn::setText(text);
+InfoBtn::InfoBtn(PuzzleDegree degree, QWidget *parent)
+        : QPushButton(parent), degree(degree), level(0) {
 }
 
 int InfoBtn::getLevel() const {
@@ -32,14 +30,22 @@ void InfoBtn::setLevel(int level) {
 
 vector<CellData> InfoBtn::readData() {
     string levelStr;
-    if (degree == "简单") {
-        levelStr = easy[level];
-    } else if (degree == "中等") {
-        levelStr = medium[level];
-    } else if (degree == "困难") {
-        levelStr = hard[level];
-    } else {
-        levelStr = very_hard[level];
+
+    switch (degree) {
+        case PuzzleDegree::EASY:
+            levelStr = easy[level];
+            break;
+        case PuzzleDegree::MEDIUM:
+            levelStr = medium[level];
+            break;
+        case PuzzleDegree::HARD:
+            levelStr = hard[level];
+            break;
+        case PuzzleDegree::VERY_HARD:
+            levelStr = very_hard[level];
+            break;
+        default:
+            break;
     }
     vector<int> levelVec;
     levelVec.reserve(81);
@@ -56,10 +62,12 @@ vector<CellData> InfoBtn::readData() {
 
 }
 
-const string &InfoBtn::getDegree() const {
+PuzzleDegree InfoBtn::getDegree() const {
     return degree;
 }
 
-void InfoBtn::setDegree(const string &degree) {
+void InfoBtn::setDegree(PuzzleDegree degree) {
     InfoBtn::degree = degree;
 }
+
+

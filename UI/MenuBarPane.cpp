@@ -2,16 +2,15 @@
 // Created by 16000 on 2022/4/11.
 //
 
-#include "MyMenuBar.h"
+#include "MenuBarPane.h"
 #include <QMessageBox>
-#include <utility>
 #include "iostream"
 
-MyMenuBar::MyMenuBar(QWidget *parent) : QMenuBar(parent) {
+MenuBarPane::MenuBarPane(QWidget *parent) : QMenuBar(parent) {
     file = new QMenu(this);
     file->setTitle("开始");
-    file->addAction("自定义游戏", this, &MyMenuBar::newGame);
-    file->addAction("说明", this, &MyMenuBar::intro);
+    file->addAction("自定义游戏", this, &MenuBarPane::newGame);
+    file->addAction("说明", this, &MenuBarPane::intro);
 
 
     puzzle = new PuzzleMenu(this);
@@ -20,11 +19,11 @@ MyMenuBar::MyMenuBar(QWidget *parent) : QMenuBar(parent) {
 
 }
 
-void MyMenuBar::newGame() {
+void MenuBarPane::newGame() {
 
 }
 
-void MyMenuBar::intro() {
+void MenuBarPane::intro() {
     QMessageBox::information(this, "说明", "该软件可以按步骤给出数独求解方案。\n\n"
                                          "点击自定义游戏可以自己创建数独，双击小数字来选择对应数字，再次双击可取消。"
                                          "点击开始游戏即可开始，点击下一步即可给出一步的提示。\n\n"
@@ -32,7 +31,7 @@ void MyMenuBar::intro() {
                                          "一些功能尚在学习中，因此可能无法求解一些较难的数独。");
 }
 
-PuzzleMenu *MyMenuBar::getPuzzle() const {
+PuzzleMenu *MenuBarPane::getPuzzle() const {
     return puzzle;
 }
 

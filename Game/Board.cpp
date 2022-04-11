@@ -205,7 +205,6 @@ vector<int> Board::findHiddenSingle() {
     for (int i = 0; i < 9; ++i) {
         for (int num = 1; num < 10; ++num) {
             int count = 0;
-            std::cout << "8";
             int index = -1;
             for (int j = 0; j < 9; ++j) {
                 if (board[i / 3 * 3 + j / 3][i % 3 * 3 + j % 3].isDecided() &&

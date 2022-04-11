@@ -20,19 +20,19 @@
 #include <string>
 #include <QPainter>
 
-#include "../Message.h"
-#include "BoardWidget.h"
-#include "../Board.h"
-#include "MyMenuBar.h"
-#include "InfoWidget.h"
+#include "../Message/Message.h"
+#include "BoardPane.h"
+#include "../Game/Board.h"
+#include "MenuBarPane.h"
+#include "InfoPane.h"
 
 using std::vector;
 
 class MainWindow : public QWidget {
 Q_OBJECT
 private:
-    BoardWidget *boardWidget;
-    InfoWidget *infoWidget;
+    BoardPane *boardWidget;
+    InfoPane *infoWidget;
     Board boardData;
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
@@ -42,7 +42,7 @@ private:
     QPushButton *nextBtn;
     QPushButton *beginBtn;
 
-    MyMenuBar *menubar;
+    MenuBarPane *menubar;
 
     vector<CellData> determinedList;
 

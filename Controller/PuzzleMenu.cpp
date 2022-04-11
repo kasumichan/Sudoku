@@ -11,29 +11,29 @@ PuzzleMenu::PuzzleMenu(QWidget *parent) : QMenu(parent) {
     this->addAction("中等", this, &PuzzleMenu::mediumPuzzle);
     this->addAction("困难", this, &PuzzleMenu::hardPuzzle);
     this->addAction("极困难", this, &PuzzleMenu::veryHardPuzzle);
-    levelSelectWidget = new LevelSelectWidget("简单");
+    levelSelectWidget = new LevelSelectPane(PuzzleDegree::EASY);
     connect(levelSelectWidget->getOkBtn(), SIGNAL(sendCellData(vector<CellData>)), this,
             SLOT(receiveCellData(vector<CellData>)));
 }
 
 void PuzzleMenu::easyPuzzle() {
-    levelSelectWidget->reset("简单");
+    levelSelectWidget->reset(PuzzleDegree::EASY);
     levelSelectWidget->show();
 }
 
 void PuzzleMenu::mediumPuzzle() {
-    levelSelectWidget->reset("中等");
+    levelSelectWidget->reset(PuzzleDegree::MEDIUM);
     levelSelectWidget->show();
 }
 
 void PuzzleMenu::hardPuzzle() {
-    levelSelectWidget->reset("困难");
+    levelSelectWidget->reset(PuzzleDegree::HARD);
     levelSelectWidget->show();
 
 }
 
 void PuzzleMenu::veryHardPuzzle() {
-    levelSelectWidget->reset("极困难");
+    levelSelectWidget->reset(PuzzleDegree::VERY_HARD);
     levelSelectWidget->show();
 
 }

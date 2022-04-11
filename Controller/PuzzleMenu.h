@@ -6,8 +6,8 @@
 #define SUDOKU_PUZZLEMENU_H
 
 #include <QMenu>
-#include "../CellData.h"
-#include "LevelSelectWidget.h"
+#include "../Message/CellData.h"
+#include "../UI/LevelSelectPane.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -19,7 +19,7 @@ class PuzzleMenu : public QMenu {
 Q_OBJECT
 private:
 
-    LevelSelectWidget *levelSelectWidget;
+    LevelSelectPane *levelSelectWidget;
 
 public:
     explicit PuzzleMenu(QWidget *parent = nullptr);

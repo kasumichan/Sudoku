@@ -7,8 +7,9 @@
 
 #include <QPushButton>
 #include <vector>
-#include "../CellData.h"
+#include "../Message/CellData.h"
 #include "../Puzzle/Puzzle.h"
+#include "../Message/PuzzleDegree.h"
 
 using std::vector;
 using std::string;
@@ -17,19 +18,20 @@ class InfoBtn : public QPushButton {
 Q_OBJECT
 private:
     int level;
-    string degree;
+    PuzzleDegree degree;
 public:
     int getLevel() const;
 
     void setLevel(int level);
 
-    const string &getDegree() const;
+    PuzzleDegree getDegree() const;
 
-    void setDegree(const string &degree);
+    void setDegree(PuzzleDegree degree);
 
     vector<CellData> readData();
+
 public:
-    explicit InfoBtn(const QString &text, string degree = "", QWidget *parent = nullptr);
+    explicit InfoBtn(PuzzleDegree degree = PuzzleDegree::EASY, QWidget *parent = nullptr);
 
 protected:
     void mousePressEvent(QMouseEvent *e) override;

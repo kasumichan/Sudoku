@@ -13,46 +13,43 @@ using std::vector;
 
 class Cell {
 private:
-    bool isSet;
-    int id_x;
-    int id_y;
-    int id_block;
-    int id_block_loc;
-public:
-    void setIsDetermined(bool isDetermined);
-
-    void setNum(int num);
-
-    void setPossibleNumList(const vector<int> &possibleNumList);
-
-private:
-    bool isDetermined;
+    int row;
+    int col;
+    int blkId;
+    int blkLoc;
+    bool decided;
     int num;
-    vector<int> possibleNumList;
+    vector<int> psbNumList;
 
 public:
     Cell();
 
-    void Set(int id_x, int id_y, int id_block, int id_block_loc, bool isDetermined, int number = 0);
+public:
 
-    bool IsSet() const;
+    void set(int row, int col, int blkId, int blkLoc, bool decided, int num = 0);
 
-    bool IsDetermined() const;
+    bool isDecided() const;
 
-    void ExcludeNum(int num);
+    void rmvNum(int num);
 
 public:
-    int getIdX() const;
+    int getRow() const;
 
-    int getIdY() const;
+    int getCol() const;
 
-    int getIdBlock() const;
+    int getBlkId() const;
 
-    int getIdBlockLoc() const;
+    int getBlkLoc() const;
 
-    const vector<int> &getPossibleNumList() const;
+    const vector<int> &getPsbNumList() const;
 
     int getNum() const;
+
+    void setDecided(bool decided);
+
+    void setNum(int num);
+
+    void setPsbList(const vector<int> &psbNumList);
 
 
 };

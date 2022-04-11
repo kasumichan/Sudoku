@@ -7,15 +7,19 @@
 
 #include <vector>
 #include <string>
+#include "CellData.h"
+#include "BoardStatus.h"
+
 using std::vector;
 using std::string;
 
 class Message {
 public:
-    vector<int> message;
-    string type;
+    CellData cellData;
+    BoardStatus boardStatus;
+    string solution;
 
-    Message(const vector<int> &message, const string &type);
+    Message(const CellData &cellData, BoardStatus boardStatus, string solution);
 
 };
 

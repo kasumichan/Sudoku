@@ -12,9 +12,12 @@ int main(int argc, char *argv[]) {
 
 
     QApplication a(argc, argv);
+    QFile qss(":/Resources/myStyle.qss");
+    if (qss.open(QFile::ReadOnly))
+        a.setStyleSheet(qss.readAll());
     MainWindow w;
 
-    w.setGeometry(200, 100,800,600);
+    w.setGeometry(200, 100, 800, 600);
 
     w.show();
 

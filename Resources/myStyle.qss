@@ -1,0 +1,381 @@
+/*****下拉框****************************************************************************/
+QComboBox{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #FFFFFF, stop:1 #E5E5E5);
+    border-radius: 4px;
+    border: 1px solid #313438;
+    padding-left: 12px;
+}
+/*右边点击框样式*/
+QComboBox::drop-down{
+    min-width: 20px;
+    border-left: 0px;
+    color: transparent;
+}
+/*下拉箭头样式*/
+QComboBox::down-arrow{
+    image: url(:/Resources/Images/triangle_down.png);
+}
+QComboBox QAbstractItemView {
+    border-width: 0px;
+    selection-background-color: #CAE2FE;
+}
+
+/*可编辑*/
+QComboBox:editable{
+    background: white;
+    font-size: 12pt;
+}
+
+QComboBox:disabled{
+    background:#dadada;
+    border: 1px solid #414449;
+}
+
+/*********************************************************************************/
+QTabBar::tab{
+    background: #E1E1E1;
+    border: 0px solid #C4C4C3;
+    min-width: 100px;
+    padding: 9px;
+    font-size: 17px;
+}
+QTabBar::tab:hover{
+     background: #E8E8E8;
+}
+QTabBar::tab:selected{
+    background: #FFFFFF;
+    border-style:solid;
+    border-top:5px solid #1B6AC7;
+    font-weight:bold;
+    padding: 5px;
+}
+
+/*按钮********************************************************************************/
+QPushButton{
+    color: #1D9DFF;
+    background-color: #FFFFFF;
+    border-color: #1D9DFF;
+    border-radius: 18px;
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px;
+}
+QPushButton::hover{
+    color: #FFFFFF;
+    background-color: #8EC8FD;
+    border-color: #8EC8FD;
+}
+QPushButton::pressed,QPushButton::checked{
+    color: #FFFFFF;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3BA0FE, stop:1 #1D9DFF);
+}
+QPushButton::disabled{
+    color: #FFFFFF;
+    background-color: #D9D9D9;
+    border-color: #D9D9D9;
+}
+
+/*搜索按钮*/
+#btnSearch,#btnReset
+{
+    color: #313438;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #E1EEFE, stop:1 #B9B9B9);
+    border: 1px solid #A5A5A5;
+    border-radius: 18px;
+}
+#btnSearch:hover,#btnReset:hover
+{
+    color: #313438;
+    background-color: #E1EEFE;
+}
+#btnSearch:pressed,#btnReset:pressed
+{
+    color: #313438;
+    background-color: #FFFFFF;
+}
+#btnSearch:disabled,#btnReset:disabled
+{
+    color: #FFFFFF;
+    background-color: #D9D9D9;
+}
+
+/*弹窗公共标题*/
+#label_title
+{
+    color: #FFFFFF;
+}
+
+/*其他公用按钮*/
+#btnSelectCase,#btnClearCase,#btnAddSelectTmpl,#btnRemoveSelectTmpl,#btnChangePwd,#btnResetAdminPwd,#btnWrite,#btnRead,#btnBatchWrite
+{
+    color: #313438;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #E1EEFE, stop:1 #B9B9B9);
+    border: 1px solid #A5A5A5;
+    border-radius: 18px;
+}
+#btnSelectCase:hover,#btnClearCase:hover,#btnAddSelectTmpl:hover,#btnRemoveSelectTmpl:hover,#btnChangePwd:hover,#btnResetAdminPwd:hover,
+#btnWrite:hover,#btnRead:hover,#btnBatchWrite:hover
+{
+    color: #313438;
+    background-color: #E1EEFE;
+}
+#btnSelectCase:pressed,#btnClearCase:pressed,#btnAddSelectTmpl:pressed,#btnRemoveSelectTmpl:pressed,#btnChangePwd:pressed,#btnResetAdminPwd:pressed,
+#btnWrite:pressed,#btnRead:pressed,#btnBatchWrite:pressed
+{
+    color: #313438;
+    background-color: #FFFFFF;
+}
+#btnSelectCase:disabled,#btnClearCase:disabled,#btnAddSelectTmpl:disabled,#btnRemoveSelectTmpl:disabled,#btnChangePwd:disabled,#btnResetAdminPwd:disabled,
+#btnWrite:disabled,#btnRead:disabled,#btnBatchWrite:disabled
+{
+    color: #FFFFFF;
+    background-color: #D9D9D9;
+}
+
+
+/*弹窗确定取消公用按钮*/
+#btnConfirm,#btnCancel,#pushButton_save,#pushButton_cancel,#pushButton_ok,#pushButton_reset,#btnSave,#btnClear,#btnSelect,#btnCancelSelect, #pushButton_start
+{
+    color: #FFFFFF;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3388E8, stop:1 #1D9DFF);
+    border-radius: 18px;
+    border-width: 0px;
+}
+#btnConfirm:hover,#btnCancel:hover,#pushButton_save:hover,#pushButton_cancel:hover,#pushButton_ok:hover,#pushButton_reset:hover,#btnSave:hover,#btnClear:hover,
+#btnSelect:hover,#btnCancelSelect:hover,#pushButton_start:hover
+{
+    color: #1D9DFF;
+    background-color: #C5E3FF;
+}
+#btnConfirm:pressed,#btnCancel:pressed,#pushButton_save:pressed,#pushButton_cancel:pressed,#pushButton_ok:pressed,#pushButton_reset:pressed,#btnSave:pressed,#btnClear:pressed,
+#btnSelect:pressed,#btnCancelSelect:pressed,#pushButton_start:pressed
+{
+    color: #FFFFFF;
+    background-color: #8EC8FD;
+}
+#btnConfirm:disabled,#btnCancel:disabled,#pushButton_save:disabled,#pushButton_cancel:disabled,#pushButton_ok:disabled,#pushButton_reset:disabled,#btnSave:disabled,#btnClear:disabled,
+#btnSelect:disabled,#btnCancelSelect:disabled,#pushButton_start:disabled
+{
+    color: #FFFFFF;
+    background-color: #D9D9D9;
+}
+
+/*翻页按钮*/
+#btnFirstPage{image: url(:/Resources/Images/first_page.png);}
+#btnPrePage{image: url(:/Resources/Images/pre_page.png);}
+#btnNextPage{image: url(:/Resources/Images/next_page.png);}
+#btnLastPage{image: url(:/Resources/Images/last_page.png);}
+
+#btnFirstPage,#btnPrePage,#btnNextPage,#btnLastPage
+{
+    background-color: transparent;
+    border-width: 0px;
+    border-radius: 6px;
+    padding:1px;
+}
+
+#btnFirstPage:hover,#btnPrePage:hover,#btnNextPage:hover,#btnLastPage:hover
+{
+    background-color: #F3F3F3;
+    border-width: 0px;
+}
+#btnFirstPage:pressed,#btnPrePage:pressed,#btnNextPage:pressed,#btnLastPage:pressed
+{
+    background-color: #B3B3B3;
+    border-width: 0px;
+}
+#btnFirstPage:disabled,#btnPrePage:disabled,#btnNextPage:disabled,#btnLastPage:disabled
+{
+    background-color:#B3B3B3;
+    border-width: 0px;
+}
+
+/*菜单 *********************************************************************************/
+QMenu{
+    background-color : #FFFFFF;
+    padding:5px 0px 0px 5px;
+    color:#313438
+}
+QMenu::item {
+
+}
+QMenu::item:selected {
+    background-color : #E1EEFE;
+}
+QMenu::item:disabled {
+    background-color : #e1e1e1;
+}
+QMenu::separator {
+    height: 2px;
+    background: rgb(235,235,236);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/*表格**********************************************************************************/
+QHeaderView{
+    color: #FFFFFF;
+    border: none;
+    background: #FFFFFF;
+    min-height: 36px;
+    font-size: 16px;
+}
+QHeaderView::section:horizontal {
+    color: #FFFFFF;
+    border: none;
+    border-left: 1px solid #FFFFFF;
+    background: #3388E8;
+}
+
+/*使纵向表头与表格样式一致 */
+QHeaderView::section:vertical {
+    min-width: 30px;
+    padding-left: 5px;
+    color:black;
+    background: transparent;
+    border: 1px solid #E5E5E5;
+    border-left: 0px;
+    border-top: 0px;
+}
+
+QHeaderView::section:vertical:pressed {
+   background:#E1EEFE
+}
+
+QHeaderView::up-arrow,QHeaderView::down-arrow {
+    width: 3px;
+    height: 3px;
+    padding-right: 1px;
+    border: none;
+}
+
+QTableView {
+    border: 1px solid #E5E5E5;
+    background: #FFFFFF;
+}
+QTableView::item {
+    padding-left: 5px;
+    padding-right: 5px;
+    border: none;
+    color:black;
+    background: transparent;
+    font: Microsoft YaHei;
+    font-size: 16px;
+    text-align: center;
+}
+QTableView::item:selected {
+    background: #E1EEFE;
+}
+QTableView QTableCornerButton::section {
+     background: #1B6AC7;
+     border: none;
+}
+
+/*编辑框*********************************************************************************/
+QLineEdit,QAbstractSpinBox{
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #313438;
+    padding-left: 12px;
+}
+
+QLineEdit#lePage, #leCurPage{
+    width: 106px;
+    height: 28px;
+    background: #FFFFFF;
+    border-radius: 0px;
+    border: 1px solid #313438;
+    padding: 0px;
+}
+
+QLineEdit::disabled{
+    background:#dadada;
+    border: 1px solid #414449;
+}
+QLineEdit::read-only{
+    border: 1px solid #414449;
+    color: #b4b4b4;
+}
+
+/*********************************************************************************/
+QAbstractSpinBox::up-button{
+	min-width: 20px;
+    border-width: 0px;
+	background-color: #D9D9D9;
+	image: url(:/Resources/Images/triangle_up.png);
+}
+QAbstractSpinBox::up-button:hover {
+    background-color: #ECECEC;
+}
+
+QAbstractSpinBox::up-button:pressed {
+    background-color: #8D8D8D;
+}
+
+
+QAbstractSpinBox::down-button{
+	min-width: 20px;
+    border-width: 0px;
+	background-color: #D9D9D9;
+	image: url(:/Resources/Images/triangle_down.png);
+}
+QAbstractSpinBox::down-button:hover {
+    background-color: #ECECEC;
+}
+
+QAbstractSpinBox::down-button:pressed {
+    background-color: #8D8D8D;
+}
+
+/*滚动条*********************************************************************************/
+QScrollBar
+{
+    min-width:10px;
+    background: #D7D7D7;
+    margin:0px,0px,0px,0px;
+    padding-top:12px;
+    padding-bottom:12px;
+}
+QScrollBar::handle
+{
+    min-width:10px;
+    background:#D7D7D7;
+    min-height:20;
+}
+QScrollBar::handle:hover
+{
+    background:#E1E1E1;
+}
+QScrollBar::handle:pressed
+{
+    background:#8C8C8C;
+}
+
+QScrollBar::sub-line:vertical   /* 设置上箭头*/
+{
+    image: url(:/Resources/Images/triangle_up.png);
+    subcontrol-position:top;
+    background:#DFDFDF;
+}
+QScrollBar::sub-line:vertical:hover  /* 当鼠标放到下箭头上的时候*/
+{
+    subcontrol-position:top;
+    background:#8C8C8C;
+}
+QScrollBar::add-line:vertical   /*下箭头的*/
+{
+    image: url(:/Resources/Images/triangle_down.png);
+    subcontrol-position:bottom;
+    background:#DFDFDF;
+}
+QScrollBar::add-line:vertical:hover   /*当鼠标放到下箭头上的时候*/
+{
+    subcontrol-position:bottom;
+    background:#8C8C8C;
+}
+
+/*********************************************************************************/
+QDialog{
+    background:#FFFFFF;
+    border: 1px solid #919191;
+}

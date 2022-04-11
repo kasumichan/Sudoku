@@ -6,9 +6,10 @@
 #define SUDOKU_CELLWIDGET_H
 
 #include <QLabel>
-#include <iostream>
 #include <QMouseEvent>
+#include <iostream>
 #include <vector>
+
 using std::vector;
 
 
@@ -16,65 +17,63 @@ class CellWidget : public QLabel {
 Q_OBJECT
 
 public:
-    const static QString unDeterminedStyle;
-    const static QString determinedStyle;
+    const static QString undecidedStyle;
+    const static QString decidedStyle;
     const static QString fixedStyle;
     const static QString invalidStyle;
 
 private:
-    int i;
-    int j;
-public:
-    int getI() const;
+    int row;
+    int col;
 
-    void setI(int i);
+    int num;
+    bool decided;
+    bool fixed;
 
-    int getJ() const;
-
-    void setJ(int j);
-
-private:
-    int determinedNum;
-    bool isDetermined;
-public:
-    int getDeterminedNum() const;
-
-    void setDeterminedNum(int determinedNum);
-
-private:
-    bool isFixed;
-public:
-    bool IsFixed() const;
-
-    void SetIsFixed(bool isFixed);
-
-public:
-    bool IsDetermined() const;
-
-    void SetIsDetermined(bool isDetermined);
-
-    void SetDeterminedNum(int num);
-
-    void SetUndetermined();
-
-    void SetFixedNum();
+    int width;
+    int height;
 
 public:
 
-    explicit CellWidget(QWidget *parent = nullptr);
+    CellWidget(int row, int col, QWidget *parent = nullptr, int width = 80, int height = 80);
+
+    int getRow() const;
+
+    void setRow(int row);
+
+    int getCol() const;
+
+    void setCol(int col);
+
+    bool isFixed() const;
+
+    void setFixed(bool fixed);
+
+    bool isDecided() const;
+
+    void setDecided(bool decided);
+
+    int getDecidedNum() const;
+
+    void setDecidedNum(int num);
+
+    void setUndecidedStatus();
+
+    void reset();
+
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
     void mousePressEvent(QMouseEvent *event) override;
 
-    void mouseReleaseEvent(QMouseEvent *ev) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 signals:
 
-    void num_clicked(vector<int> num);
+    void numClicked(vector<int> num);
 
-    void num_removed();
+    void numRemoved();
 
 };
 

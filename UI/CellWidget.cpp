@@ -5,38 +5,43 @@
 #include "CellWidget.h"
 
 
-const QString CellWidget::unDeterminedStyle = "color:gray;font-size:24px;border-width: 1px;border-style: solid;border-color: rgb(0, 0, 0);background-color: rgb(255, 255, 255);";
-const QString CellWidget::determinedStyle = "color:blue;font-size:50px;border-width: 1px;border-style: solid;border-color: rgb(0, 0, 0);background-color: rgb(255, 255, 255);";
+const QString CellWidget::undecidedStyle = "color:gray;font-size:24px;border-width: 1px;border-style: solid;border-color: rgb(0, 0, 0);background-color: rgb(255, 255, 255);";
+const QString CellWidget::decidedStyle = "color:blue;font-size:50px;border-width: 1px;border-style: solid;border-color: rgb(0, 0, 0);background-color: rgb(255, 255, 255);";
 const QString CellWidget::fixedStyle = "color:green;font-size:50px;border-width: 1px;border-style: solid;border-color: rgb(0, 0, 0);background-color: rgb(255, 255, 255);";
 const QString CellWidget::invalidStyle = "color:red;font-size:50px;border-width: 1px;border-style: solid;border-color: rgb(0, 0, 0);background-color: rgb(255, 255, 255);";
 
-CellWidget::CellWidget(QWidget *parent) : QLabel(parent) {
-    i = -1;
-    j = -1;
-    determinedNum = -1;
-    isFixed = false;
-    isDetermined = false;
+CellWidget::CellWidget(int row, int col, QWidget *parent, int width, int height) :
+        QLabel(parent), width(width), height(height), row(row), col(col), decided(false), fixed(false), num(-1) {
+    CellWidget::setFixedSize(width, height);
+    CellWidget::setWordWrap(true);
+    CellWidget::setAlignment(Qt::AlignCenter);
+    CellWidget::setFrameShape(QFrame::Box);
+    CellWidget::setFrameShadow(QFrame::Raised);
+    CellWidget::setUndecidedStatus();
 }
 
 void CellWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QWidget::mouseDoubleClickEvent(event);
-    int clickedNum = event->x() / 27 + event->y() / 27 * 3 + 1;
-//    std::cout << clickedNum << std::endl;
-    if (!isDetermined && !isFixed) {
-        SetDeterminedNum(clickedNum);
-        emit num_clicked({i, j, clickedNum});
-    } else if (!isFixed) {
-        emit num_removed();
-        SetUndetermined();
+    if (!CellWidget::isFixed()) {
+        if (CellWidget::isDecided()) {
+            CellWidget::setDecided(false);
+            CellWidget::setUndecidedStatus();
+            emit numRemoved();
+        } else {
+            int clickedNum = event->x() / (width / 3) + event->y() / (height / 3) * 3 + 1;
+            CellWidget::setDecided(true);
+            CellWidget::setDecidedNum(clickedNum);
+            emit numClicked({row, col, clickedNum});
+        }
     }
 }
 
-bool CellWidget::IsDetermined() const {
-    return isDetermined;
+bool CellWidget::isDecided() const {
+    return decided;
 }
 
-void CellWidget::SetIsDetermined(bool isDetermined) {
-    CellWidget::isDetermined = isDetermined;
+void CellWidget::setDecided(bool decided) {
+    CellWidget::decided = decided;
 }
 
 void CellWidget::mousePressEvent(QMouseEvent *event) {
@@ -44,61 +49,59 @@ void CellWidget::mousePressEvent(QMouseEvent *event) {
 
 }
 
-void CellWidget::mouseReleaseEvent(QMouseEvent *ev) {
-    QLabel::mouseReleaseEvent(ev);
-
-
+void CellWidget::mouseReleaseEvent(QMouseEvent *event) {
+    QLabel::mouseReleaseEvent(event);
 }
 
-void CellWidget::SetDeterminedNum(int num) {
-    determinedNum = num;
+void CellWidget::setDecidedNum(int num) {
+    CellWidget::num = num;
     setText(QString::fromStdString(std::to_string(num)));
-    setStyleSheet(determinedStyle);
-    isDetermined = !isDetermined;
+    setStyleSheet(decidedStyle);
 }
 
-void CellWidget::SetUndetermined() {
-
+void CellWidget::setUndecidedStatus() {
+    CellWidget::num = -1;
     setText("1 2 3 4 5 6 7 8 9");
-    setStyleSheet(unDeterminedStyle);
-    isDetermined = false;
+    setStyleSheet(undecidedStyle);
 }
 
-bool CellWidget::IsFixed() const {
-    return isFixed;
+bool CellWidget::isFixed() const {
+    return fixed;
 }
 
-void CellWidget::SetIsFixed(bool isFixed) {
-    CellWidget::isFixed = isFixed;
+void CellWidget::setFixed(bool fixed) {
+    CellWidget::fixed = fixed;
+    if (isFixed()) {
+        CellWidget::setText(QString::fromStdString(std::to_string(num)));
+        CellWidget::setStyleSheet(fixedStyle);
+    } else {
+        CellWidget::setUndecidedStatus();
+    }
+
 }
 
-void CellWidget::SetFixedNum() {
-
-    setText(QString::fromStdString(std::to_string(determinedNum)));
-    setStyleSheet(fixedStyle);
-    isFixed = true;
+int CellWidget::getDecidedNum() const {
+    return num;
 }
 
-int CellWidget::getDeterminedNum() const {
-    return determinedNum;
+int CellWidget::getRow() const {
+    return row;
 }
 
-void CellWidget::setDeterminedNum(int determinedNum) {
-    CellWidget::determinedNum = determinedNum;
+void CellWidget::setRow(int row) {
+    CellWidget::row = row;
 }
 
-int CellWidget::getI() const {
-    return i;
+int CellWidget::getCol() const {
+    return col;
 }
 
-void CellWidget::setI(int i) {
-    CellWidget::i = i;
+void CellWidget::setCol(int col) {
+    CellWidget::col = col;
 }
 
-int CellWidget::getJ() const {
-    return j;
-}
-
-void CellWidget::setJ(int j) {
-    CellWidget::j = j;
+void CellWidget::reset() {
+    CellWidget::setDecided(false);
+    CellWidget::setFixed(false);
+    CellWidget::setUndecidedStatus();
 }

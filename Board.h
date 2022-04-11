@@ -12,29 +12,30 @@
 class Board {
 private:
 
-    int totalDetermined;
+    int totDecided;
+
     vector<vector<Cell>> board = vector<vector<Cell>>(9, vector<Cell>(9));
 
+    void updatePsbNumList();
 
 
 public:
-    explicit Board(const vector<vector<int>> &determinedNumList);
+    explicit Board(const vector<CellData> &decidedNumList);
 
-    void UpdatePossibleNumList();
 
-    vector<int> FindFullHouse();
+    vector<int> findFullHouse();
 
-    vector<int> FindHiddenSingle();
+    vector<int> findHiddenSingle();
 
-    vector<int> FindNakedSingle();
+    vector<int> findNakedSingle();
 
     Message run();
 
     bool idk();
 
-    bool IsValid();
+    bool isValid();
 
-    void Print();
+    void print();
 
 
 

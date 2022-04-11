@@ -4,4 +4,10 @@
 
 #include "Message.h"
 
-Message::Message(const vector<int> &message, const string &type) : message(message), type(type) {}
+#include <utility>
+
+
+Message::Message(const CellData &cellData, BoardStatus boardStatus, string solution) :
+        cellData(cellData), boardStatus(boardStatus), solution(std::move(solution)) {
+
+}

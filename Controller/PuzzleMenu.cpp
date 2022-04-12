@@ -10,7 +10,7 @@ PuzzleMenu::PuzzleMenu(QWidget *parent) : QMenu(parent) {
     this->addAction("简单", this, &PuzzleMenu::easyPuzzle);
     this->addAction("中等", this, &PuzzleMenu::mediumPuzzle);
     this->addAction("困难", this, &PuzzleMenu::hardPuzzle);
-    this->addAction("极困难", this, &PuzzleMenu::veryHardPuzzle);
+    this->addAction("专家", this, &PuzzleMenu::veryHardPuzzle);
     levelSelectWidget = new LevelSelectPane(PuzzleDegree::EASY);
     connect(levelSelectWidget->getOkBtn(), SIGNAL(sendCellData(vector<CellData>)), this,
             SLOT(receiveCellData(vector<CellData>)));

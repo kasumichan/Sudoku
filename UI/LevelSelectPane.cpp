@@ -10,12 +10,14 @@
 using namespace std;
 
 LevelSelectPane::LevelSelectPane(PuzzleDegree degree, QWidget *parent) :
-        QWidget(parent), page(0), level(0), rowCnt(4), colCnt(5), degree(degree) {
+        QWidget(parent), page(0), level(0), rowCnt(4), colCnt(5), degree(degree), lastLevel(0) {
     levelBtn = vector<InfoBtn *>(rowCnt * colCnt);
     for (int i = 0; i < 20; ++i) {
         levelBtn[i] = new InfoBtn();
         levelBtn[i]->setText(QString::number(i + 1));
+        levelBtn[i]->setCheckable(true);
     }
+    levelBtn[0]->setChecked(true);
     lastBtn = new QPushButton("上一页");
     nextBtn = new QPushButton("下一页");
     okBtn = new InfoBtn(PuzzleDegree::EASY);
@@ -61,7 +63,10 @@ void LevelSelectPane::lastClicked() {
 
 
 void LevelSelectPane::levelBtnClicked(int i) {
+    levelBtn[lastLevel]->setChecked(false);
+    levelBtn[i % 20]->setChecked(true);
     okBtn->setLevel(i);
+    lastLevel = i % 20;
 }
 
 void LevelSelectPane::addListener() {
@@ -83,9 +88,12 @@ void LevelSelectPane::reset(PuzzleDegree degree) {
     for (int i = 0; i < rowCnt * colCnt; ++i) {
         levelBtn[i]->setLevel(i);
         levelBtn[i]->setText(QString::number(i + 1));
+        levelBtn[i]->setChecked(false);
     }
+    levelBtn[0]->setChecked(true);
     LevelSelectPane::page = 0;
     LevelSelectPane::level = 0;
+    LevelSelectPane::lastLevel = 0;
 }
 
 void LevelSelectPane::setTitle() {
@@ -100,7 +108,7 @@ void LevelSelectPane::setTitle() {
             LevelSelectPane::setWindowTitle("困难");
             break;
         case PuzzleDegree::VERY_HARD:
-            LevelSelectPane::setWindowTitle("极困难");
+            LevelSelectPane::setWindowTitle("专家");
             break;
         default:
             break;

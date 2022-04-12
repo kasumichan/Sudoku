@@ -62,7 +62,7 @@ public:
 
 private slots:
 
-    void on_new_game_clicked();
+    void newGameStarted();
 
     void on_next_clicked();
 

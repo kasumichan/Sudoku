@@ -44,7 +44,7 @@ void BoardPane::initLayout() {
     QPalette pal(this->palette());
 
     //设置背景黑色
-    pal.setColor(QPalette::Background, Qt::black);
+    pal.setColor(QPalette::Background, Qt::blue);
     BoardPane::setAutoFillBackground(true);
     BoardPane::setPalette(pal);
     BoardPane::setLayout(layout);

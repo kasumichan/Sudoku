@@ -7,11 +7,13 @@
 #include <utility>
 #include <iostream>
 
-void InfoBtn::mousePressEvent(QMouseEvent *e) {
+void InfoBtn::mouseReleaseEvent(QMouseEvent *e) {
     QAbstractButton::mousePressEvent(e);
     if (text() == "确定") {
         emit sendCellData(readData());
     } else {
+        setCheckable(true);
+        setChecked(true);
         emit sendLevel(level);
     }
 }

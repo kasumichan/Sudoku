@@ -34,7 +34,7 @@ public:
     explicit InfoBtn(PuzzleDegree degree = PuzzleDegree::EASY, QWidget *parent = nullptr);
 
 protected:
-    void mousePressEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
 
 signals:
 

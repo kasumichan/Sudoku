@@ -25,9 +25,11 @@ set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
+set(APP_ICON_RESOURCE_WINDOWS "Resources/resources.rc")
+
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
 
-add_executable(Sudoku main.cpp Game/Cell.cpp Game/Cell.h Game/Board.cpp Game/Board.h UI/MainWindow.cpp UI/MainWindow.h UI/BoardPane.cpp UI/BoardPane.h Controller/CellWidget.cpp Controller/CellWidget.h Message/Message.cpp Message/Message.h UI/InfoPane.cpp UI/InfoPane.h Message/CellData.cpp Message/CellData.h Message/BoardStatus.h Puzzle/Puzzle.h UI/MenuBarPane.cpp UI/MenuBarPane.h UI/LevelSelectPane.cpp UI/LevelSelectPane.h Controller/InfoBtn.cpp Controller/InfoBtn.h Controller/PuzzleMenu.cpp Controller/PuzzleMenu.h Message/PuzzleDegree.h)
+add_executable(Sudoku main.cpp Game/Cell.cpp Game/Cell.h Game/Board.cpp Game/Board.h UI/MainWindow.cpp UI/MainWindow.h UI/BoardPane.cpp UI/BoardPane.h Controller/CellWidget.cpp Controller/CellWidget.h Message/Message.cpp Message/Message.h UI/InfoPane.cpp UI/InfoPane.h Message/CellData.cpp Message/CellData.h Message/BoardStatus.h Puzzle/Puzzle.h UI/MenuBarPane.cpp UI/MenuBarPane.h UI/LevelSelectPane.cpp UI/LevelSelectPane.h Controller/InfoBtn.cpp Controller/InfoBtn.h Controller/PuzzleMenu.cpp Controller/PuzzleMenu.h Message/PuzzleDegree.h ${APP_ICON_RESOURCE_WINDOWS})
 
 target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED})
 

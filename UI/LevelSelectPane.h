@@ -23,6 +23,7 @@ private:
     PuzzleDegree degree;
     int rowCnt;
     int colCnt;
+    int lastLevel;
 public:
     InfoBtn *getOkBtn() const;
 

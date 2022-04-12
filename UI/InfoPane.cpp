@@ -4,6 +4,8 @@
 
 #include "InfoPane.h"
 #include <QScrollArea>
+#include <QDebug>
+#include <iostream>
 
 InfoPane::InfoPane(QWidget *parent) : QWidget(parent) {
     info = new QLabel(this);
@@ -17,8 +19,6 @@ InfoPane::InfoPane(QWidget *parent) : QWidget(parent) {
     tipPanel->setWordWrap(true);
     tipPanel->setFrameShadow(QFrame::Raised);
 
-    tipPanel->setStyleSheet(
-            "border-width: 1px;border-style: solid;border-color: rgb(0, 0, 0);background-color: rgb(255, 255, 255);");
 
 
     auto *layout = new QVBoxLayout;

@@ -56,6 +56,7 @@ void MainWindow::initLayout() {
 void MainWindow::addListener() {
     connect(nextBtn, SIGNAL(clicked(bool)), this, SLOT(on_next_clicked()));
     connect(beginBtn, SIGNAL(clicked(bool)), this, SLOT(on_begin_clicked()));
+
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
             connect(boardWidget->getBoard()[i][j], SIGNAL(numRemoved()), this, SLOT(remove_num()));
@@ -64,11 +65,8 @@ void MainWindow::addListener() {
     }
     connect(menubar->getPuzzle(), SIGNAL(sendPuzzleData(vector<CellData>)), this,
             SLOT(receivePuzzleData(vector<CellData>)));
-}
 
-void MainWindow::on_new_game_clicked() {
-    reset();
-
+    connect(menubar, SIGNAL(startNewGame()), this, SLOT(newGameStarted()));
 }
 
 
@@ -161,4 +159,8 @@ void MainWindow::setFixed() {
             }
         }
     }
+}
+
+void MainWindow::newGameStarted() {
+    reset();
 }

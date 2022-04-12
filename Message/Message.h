@@ -18,8 +18,9 @@ public:
     CellStruct cellData;
     BoardStatus boardStatus;
     string solution;
+    vector<CellStruct> excludeData;
 
-    Message(const CellStruct &cellData, BoardStatus boardStatus, string solution);
+    Message(const CellStruct &cellData, BoardStatus boardStatus, string solution, const vector<CellStruct>& excludeData ={});
 
 };
 

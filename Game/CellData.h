@@ -49,6 +49,8 @@ public:
 
     void setPsbList(const vector<int> &psbNumList);
 
+    bool contain(int num);
+
 
 };
 

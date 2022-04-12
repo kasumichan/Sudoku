@@ -6,8 +6,6 @@
 
 #include <utility>
 #include "iostream"
-#include "fstream"
-#include "sstream"
 
 using std::string;
 using std::ifstream;
@@ -84,9 +82,28 @@ void MainWindow::on_next_clicked() {
         case BoardStatus::VAGUE:
             QMessageBox::information(this, "说明", "数独信息不够或者我太弱了，等我变强一点。");
             break;
-        case BoardStatus::HINT:
-            boardData.getBoard()[message.cellData.getRow()][message.cellData.getColumn()].rmvNum(
-                    message.cellData.getNum());
+        case BoardStatus::XWING_ROW_FOUND:
+            for (int k = 0; k < 9; ++k) {
+                if (k != message.excludeData[0].getRow() && k != message.excludeData[2].getRow()) {
+                    boardData.getBoard()[k][message.excludeData[0].getColumn()].rmvNum(message.excludeData[0].getNum());
+                    boardData.getBoard()[k][message.excludeData[1].getColumn()].rmvNum(message.excludeData[0].getNum());
+                }
+            }
+            infoWidget->setPath(infoWidget->getPath() + message.solution);
+            break;
+        case BoardStatus::XWING_COL_FOUND:
+            for (int k = 0; k < 9; ++k) {
+                if (k != message.excludeData[0].getColumn() && k != message.excludeData[1].getColumn()) {
+                    boardData.getBoard()[message.excludeData[0].getRow()][k].rmvNum(message.excludeData[0].getNum());
+                    boardData.getBoard()[message.excludeData[2].getRow()][k].rmvNum(message.excludeData[0].getNum());
+                }
+            }
+            infoWidget->setPath(infoWidget->getPath() + message.solution);
+            break;
+        case BoardStatus::INTERSECTION_FOUND:
+            for (auto data: message.excludeData) {
+                boardData.getBoard()[data.getRow()][data.getColumn()].rmvNum(data.getNum());
+            }
             infoWidget->setPath(infoWidget->getPath() + message.solution);
             break;
         case BoardStatus::VALID:

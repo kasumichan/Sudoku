@@ -66,3 +66,8 @@ void CellData::setNum(int num) {
 void CellData::setPsbList(const vector<int> &psbNumList) {
     CellData::psbNumList = psbNumList;
 }
+
+bool CellData::contain(int num) {
+    if (isDecided()) return false;
+    return std::find(psbNumList.begin(), psbNumList.end(), num) != psbNumList.end();
+}

@@ -7,7 +7,8 @@
 #include <utility>
 
 
-Message::Message(const CellStruct &cellData, BoardStatus boardStatus, string solution) :
-        cellData(cellData), boardStatus(boardStatus), solution(std::move(solution)) {
+Message::Message(const CellStruct &cellData, BoardStatus boardStatus, string solution,
+                 const vector<CellStruct> &excludeData) :
+        cellData(cellData), boardStatus(boardStatus), solution(std::move(solution)), excludeData(excludeData) {
 
 }

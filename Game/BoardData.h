@@ -48,6 +48,8 @@ public:
 
     Message findIntersections();
 
+    Message findXWing();
+
     Message run();
 
     bool idk();

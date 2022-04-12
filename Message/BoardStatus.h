@@ -10,7 +10,9 @@ enum class BoardStatus {
     VALID,
     INVALID,
     VAGUE,
-    HINT
+    INTERSECTION_FOUND,
+    XWING_ROW_FOUND,
+    XWING_COL_FOUND
 };
 
 

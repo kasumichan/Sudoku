@@ -154,9 +154,7 @@ vector<int> BoardData::findHiddenSingle() {
                 if (board[i][j].isDecided() && board[i][j].getNum() == num) {
                     break;
                 }
-                if (!board[i][j].isDecided() &&
-                    std::find(board[i][j].getPsbNumList().begin(), board[i][j].getPsbNumList().end(), num) !=
-                    board[i][j].getPsbNumList().end()) {
+                if (!board[i][j].isDecided() && board[i][j].contain(num)) {
                     count++;
                     index = j;
                 }
@@ -181,9 +179,7 @@ vector<int> BoardData::findHiddenSingle() {
                 if (board[i][j].isDecided() && board[i][j].getNum() == num) {
                     break;
                 }
-                if (!board[i][j].isDecided() &&
-                    std::find(board[i][j].getPsbNumList().begin(), board[i][j].getPsbNumList().end(), num) !=
-                    board[i][j].getPsbNumList().end()) {
+                if (!board[i][j].isDecided() && board[i][j].contain(num)) {
                     count++;
                     index = i;
                 }
@@ -210,9 +206,7 @@ vector<int> BoardData::findHiddenSingle() {
                 if (board[r][c].isDecided() && board[r][c].getNum() == num) {
                     break;
                 }
-                if (!board[r][c].isDecided() &&
-                    std::find(board[r][c].getPsbNumList().begin(), board[r][c].getPsbNumList().end(), num) !=
-                    board[r][c].getPsbNumList().end()) {
+                if (!board[r][c].isDecided() && board[r][c].contain(num)) {
                     count++;
                     index = j;
                 }
@@ -255,7 +249,11 @@ Message BoardData::run() {
         return message;
     }
     if (message.boardStatus == BoardStatus::VAGUE) {
-        return findIntersections();
+        message = findIntersections();
+        if (message.boardStatus != BoardStatus::VAGUE) {
+            return message;
+        }
+        return findXWing();
     }
     return Message{CellStruct(), BoardStatus::VAGUE, ""};
 }
@@ -380,44 +378,46 @@ Message BoardData::findIntersections() {
             for (int k = 0; k < 9; ++k) {
                 int r = bk2r(b, k);
                 int c = bk2c(b, k);
-                if (!board[r][c].isDecided() &&
-                    std::find(board[r][c].getPsbNumList().begin(), board[r][c].getPsbNumList().end(), num) !=
-                    board[r][c].getPsbNumList().end()) {
+                if (!board[r][c].isDecided() && board[r][c].contain(num)) {
                     rowIndexSet.insert(r);
                     colIndexSet.insert(c);
                 }
             }
             if (rowIndexSet.size() == 1) {
                 int i = *rowIndexSet.begin();
+                vector<CellStruct> vec = {};
+                stringstream ss;
                 for (int j = 0; j < 9; ++j) {
                     if (colIndexSet.find(j) != colIndexSet.end()) {
                         continue;
                     }
-                    if (!board[i][j].isDecided() &&
-                        std::find(board[i][j].getPsbNumList().begin(), board[i][j].getPsbNumList().end(), num) !=
-                        board[i][j].getPsbNumList().end()) {
-                        stringstream ss;
+                    if (!board[i][j].isDecided() && board[i][j].contain(num)) {
+                        vec.emplace_back(i, j, num);
                         ss << "在第" << i + 1 << "行中，数字" << num << "一定在第" << b + 1 << "宫，因此第" << i + 1 << "行第" << j + 1
                            << "列一定不能填" << num << endl;
-                        return {{i, j, num}, BoardStatus::HINT, ss.str()};
                     }
+                }
+                if (!vec.empty()) {
+                    return {{}, BoardStatus::INTERSECTION_FOUND, ss.str(), vec};
                 }
             }
             if (colIndexSet.size() == 1) {
                 int j = *colIndexSet.begin();
+                vector<CellStruct> vec = {};
+                stringstream ss;
                 for (int i = 0; i < 9; ++i) {
                     if (rowIndexSet.find(i) != rowIndexSet.end()) {
                         continue;
                     }
-                    if (!board[i][j].isDecided() &&
-                        std::find(board[i][j].getPsbNumList().begin(), board[i][j].getPsbNumList().end(), num) !=
-                        board[i][j].getPsbNumList().end()) {
-                        stringstream ss;
+                    if (!board[i][j].isDecided() && board[i][j].contain(num)) {
+                        vec.emplace_back(i, j, num);
                         ss << "在第" << j + 1 << "列中，数字" << num << "一定在第" << b + 1 << "宫，因此第" << i + 1 << "行第" << j + 1
                            << "列一定不能填" << num << endl;
                         board[i][j].rmvNum(num);
-                        return {{i, j, num}, BoardStatus::HINT, ss.str()};
                     }
+                }
+                if (!vec.empty()) {
+                    return {{}, BoardStatus::INTERSECTION_FOUND, ss.str(), vec};
                 }
             }
         }
@@ -436,28 +436,28 @@ Message BoardData::findIntersections() {
             set<int> blockIndexSet = {};
             for (int j = 0; j < 9; ++j) {
                 int b = rc2b(i, j);
-                if (!board[i][j].isDecided() &&
-                    std::find(board[i][j].getPsbNumList().begin(), board[i][j].getPsbNumList().end(), num) !=
-                    board[i][j].getPsbNumList().end()) {
+                if (!board[i][j].isDecided() && board[i][j].contain(num)) {
                     blockIndexSet.insert(b);
                 }
             }
             if (blockIndexSet.size() == 1) {
                 int b = *blockIndexSet.begin();
+                vector<CellStruct> vec = {};
+                stringstream ss;
                 for (int k = 0; k < 9; ++k) {
                     int r = bk2r(b, k);
                     int c = bk2c(b, k);
                     if (r == i) {
                         continue;
                     }
-                    if (!board[r][c].isDecided() &&
-                        std::find(board[r][c].getPsbNumList().begin(), board[r][c].getPsbNumList().end(), num) !=
-                        board[r][c].getPsbNumList().end()) {
-                        stringstream ss;
+                    if (!board[r][c].isDecided() && board[r][c].contain(num)) {
+                        vec.emplace_back(r, c, num);
                         ss << "在第" << b + 1 << "宫中，数字" << num << "一定在第" << i + 1 << "行，因此第" << r + 1 << "行第" << c + 1
                            << "列一定不能填" << num << endl;
-                        return {{r, c, num}, BoardStatus::HINT, ss.str()};
                     }
+                }
+                if (!vec.empty()) {
+                    return {{}, BoardStatus::INTERSECTION_FOUND, ss.str(), vec};
                 }
             }
         }
@@ -475,13 +475,13 @@ Message BoardData::findIntersections() {
             set<int> blockIndexSet = {};
             for (int i = 0; i < 9; ++i) {
                 int b = rc2b(i, j);
-                if (!board[i][j].isDecided() &&
-                    std::find(board[i][j].getPsbNumList().begin(), board[i][j].getPsbNumList().end(), num) !=
-                    board[i][j].getPsbNumList().end()) {
+                if (!board[i][j].isDecided() && board[i][j].contain(num)) {
                     blockIndexSet.insert(b);
                 }
             }
             if (blockIndexSet.size() == 1) {
+                vector<CellStruct> vec = {};
+                stringstream ss;
                 int b = *blockIndexSet.begin();
                 for (int k = 0; k < 9; ++k) {
                     int r = bk2r(b, k);
@@ -489,14 +489,14 @@ Message BoardData::findIntersections() {
                     if (c == j) {
                         continue;
                     }
-                    if (!board[r][c].isDecided() &&
-                        std::find(board[r][c].getPsbNumList().begin(), board[r][c].getPsbNumList().end(), num) !=
-                        board[r][c].getPsbNumList().end()) {
-                        stringstream ss;
+                    if (!board[r][c].isDecided() && board[r][c].contain(num)) {
                         ss << "在第" << b + 1 << "宫中，数字" << num << "一定在第" << j + 1 << "列，因此第" << r + 1 << "行第" << c + 1
                            << "列一定不能填" << num << endl;
-                        return {{r, c, num}, BoardStatus::HINT, ss.str()};
+                        vec.emplace_back(r, c, num);
                     }
+                }
+                if (!vec.empty()) {
+                    return {{}, BoardStatus::INTERSECTION_FOUND, ss.str(), vec};
                 }
             }
         }
@@ -584,5 +584,97 @@ Message BoardData::findSingles() {
 
 vector<vector<CellData>> &BoardData::getBoard() {
     return board;
+}
+
+Message BoardData::findXWing() {
+
+    for (int i = 0; i < 8; ++i) {
+        for (int j = i + 1; j < 9; ++j) {
+            for (int m = 0; m < 8; ++m) {
+                for (int n = m + 1; n < 9; ++n) {
+                    if (board[i][m].isDecided() || board[i][n].isDecided() || board[j][m].isDecided() ||
+                        board[j][n].isDecided()) {
+                        continue;
+                    }
+                    vector<int> commonNum = {};
+                    for (int num = 0; num < 9; ++num) {
+                        if (board[i][m].contain(num) && board[i][n].contain(num) && board[j][m].contain(num) &&
+                            board[j][n].contain(num)) {
+                            commonNum.push_back(num);
+                        }
+                    }
+                    for (auto num: commonNum) {
+                        bool rowFlag = true;
+                        for (int k = 0; k < 9; ++k) {
+                            if (k == m || k == n) {
+                                continue;
+                            }
+                            if ((!board[i][k].isDecided() && board[i][k].contain(num)) ||
+                                (!board[j][k].isDecided() && board[j][k].contain(num))) {
+                                rowFlag = false;
+                                break;
+                            }
+                        }
+                        // 该数字在该两行只存在四个交叉点
+                        if (rowFlag) {
+                            // 有没有排除该两列的其他点
+                            bool flag = false;
+                            for (int k = 0; k < 9; ++k) {
+                                if (k == i || k == j) {
+                                    continue;
+                                }
+                                if ((!board[k][m].isDecided() && board[k][m].contain(num)) ||
+                                    (!board[k][n].isDecided() && board[k][n].contain(num))) {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if (flag) {
+                                stringstream ss;
+                                ss << "在第" << m + 1 << "列和第" << n + 1 << "列，除了第" << i + 1 << "行和第" << j + 1
+                                   << "行，其他行都不可能填" << num << endl;
+                                return {{}, BoardStatus::XWING_ROW_FOUND, ss.str(),
+                                        {{i, m, num}, {i, n, num}, {j, m, num}, {j, n, num}}};
+                            }
+                        }
+                        bool colFlag = true;
+                        for (int k = 0; k < 9; ++k) {
+                            if (k == i || k == j) {
+                                continue;
+                            }
+                            if ((!board[k][m].isDecided() && board[k][m].contain(num)) ||
+                                (!board[k][n].isDecided() && board[k][n].contain(num))) {
+                                colFlag = false;
+                                break;
+                            }
+                        }
+                        // 该数字在该两列只存在四个交叉点
+                        if (colFlag) {
+                            // 有没有排除该两行的其他点
+                            bool flag = false;
+                            for (int k = 0; k < 9; ++k) {
+                                if (k == m || k == n) {
+                                    continue;
+                                }
+                                if ((!board[i][k].isDecided() && board[i][k].contain(num)) ||
+                                    (!board[j][k].isDecided() && board[j][k].contain(num))) {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if (flag) {
+                                stringstream ss;
+                                ss << "在第" << i + 1 << "行和第" << j + 1 << "行，除了第" << m + 1 << "列和第" << n + 1
+                                   << "列，其他列都不可能填" << num << endl;
+                                return {{}, BoardStatus::XWING_COL_FOUND, ss.str(),
+                                        {{i, m, num}, {i, n, num}, {j, m, num}, {j, n, num}}};
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return {{}, BoardStatus::VAGUE, ""};
 }
 

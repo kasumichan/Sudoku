@@ -8,7 +8,7 @@
 #include <QMenuBar>
 #include "LevelSelectPane.h"
 #include "../Puzzle/Puzzle.h"
-#include "../Message/CellData.h"
+#include "../Message/CellStruct.h"
 #include "../Controller/PuzzleMenu.h"
 
 

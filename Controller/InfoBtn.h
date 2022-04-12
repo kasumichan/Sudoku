@@ -7,7 +7,7 @@
 
 #include <QPushButton>
 #include <vector>
-#include "../Message/CellData.h"
+#include "../Message/CellStruct.h"
 #include "../Puzzle/Puzzle.h"
 #include "../Message/PuzzleDegree.h"
 
@@ -28,7 +28,7 @@ public:
 
     void setDegree(PuzzleDegree degree);
 
-    vector<CellData> readData();
+    vector<CellStruct> readData();
 
 public:
     explicit InfoBtn(PuzzleDegree degree = PuzzleDegree::EASY, QWidget *parent = nullptr);
@@ -40,7 +40,7 @@ signals:
 
     void sendLevel(int level);
 
-    void sendCellData(vector<CellData>);
+    void sendCellData(vector<CellStruct>);
 
 };
 

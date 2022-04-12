@@ -4,7 +4,7 @@
 #include <sstream>
 #include <QApplication>
 #include <QDebug>
-#include "Game/Board.h"
+#include "Game/BoardData.h"
 #include "windows.h"
 #include "UI/MainWindow.h"
 

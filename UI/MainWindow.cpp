@@ -63,41 +63,53 @@ void MainWindow::addListener() {
             connect(boardWidget->getBoard()[i][j], SIGNAL(numClicked(vector<int>)), this, SLOT(add_num(vector<int>)));
         }
     }
-    connect(menubar->getPuzzle(), SIGNAL(sendPuzzleData(vector<CellData>)), this,
-            SLOT(receivePuzzleData(vector<CellData>)));
+    connect(menubar->getPuzzle(), SIGNAL(sendPuzzleData(vector<CellStruct>)), this,
+            SLOT(receivePuzzleData(vector<CellStruct>)));
 
     connect(menubar, SIGNAL(startNewGame()), this, SLOT(newGameStarted()));
 }
 
 
 void MainWindow::on_next_clicked() {
-    boardData = Board(determinedList);
 
     if (determinedList.size() == 81) {
         return;
     }
     Message message = boardData.run();
 
-
-    if (message.boardStatus == BoardStatus::INVALID) {
-        QMessageBox::information(this, "警告", "数独非法");
-    } else if (message.boardStatus == BoardStatus::VAGUE) {
-        QMessageBox::information(this, "说明", "数独信息不够或者我太弱了，等我变强一点。");
-    } else {
-        determinedList.emplace_back(message.cellData.getRow(), message.cellData.getColumn(), message.cellData.getNum());
-        boardWidget->getBoard()[message.cellData.getRow()][message.cellData.getColumn()]->setDecidedNum(
-                message.cellData.getNum());
-        infoWidget->setPath(infoWidget->getPath() + message.solution);
+    switch (message.boardStatus) {
+        case BoardStatus::INVALID:
+            QMessageBox::information(this, "警告", "数独非法");
+            break;
+        case BoardStatus::VAGUE:
+            QMessageBox::information(this, "说明", "数独信息不够或者我太弱了，等我变强一点。");
+            break;
+        case BoardStatus::HINT:
+            boardData.getBoard()[message.cellData.getRow()][message.cellData.getColumn()].rmvNum(
+                    message.cellData.getNum());
+            infoWidget->setPath(infoWidget->getPath() + message.solution);
+            break;
+        case BoardStatus::VALID:
+            determinedList.emplace_back(message.cellData.getRow(), message.cellData.getColumn(),
+                                        message.cellData.getNum());
+            boardWidget->getBoard()[message.cellData.getRow()][message.cellData.getColumn()]->setDecidedNum(
+                    message.cellData.getNum());
+            infoWidget->setPath(infoWidget->getPath() + message.solution);
+            break;
+        default:
+            break;
     }
 
+
     if (determinedList.size() == 81) {
+        setFixed();
         QMessageBox::information(this, "完成", "太厉害了。");
     }
 }
 
 void MainWindow::on_begin_clicked() {
     determinedList = {};
-
+    infoWidget->setPath("");
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
             if (boardWidget->getBoard()[i][j]->getDecidedNum() > 0) {
@@ -105,7 +117,7 @@ void MainWindow::on_begin_clicked() {
             }
         }
     }
-    boardData = Board(determinedList);
+    boardData = BoardData(determinedList);
     if (!boardData.isValid()) {
         QMessageBox::information(this, "警告", "数独非法");
         return;
@@ -116,7 +128,7 @@ void MainWindow::on_begin_clicked() {
 
 void MainWindow::mouseDoubleClickEvent(QMouseEvent *event) {
     QWidget::mouseDoubleClickEvent(event);
-    boardData = Board(determinedList);
+    boardData = BoardData(determinedList);
     if (!boardData.isValid()) {
         boardWidget->getBoard()[determinedList.back().getRow()][determinedList.back().getColumn()]->setStyleSheet(
                 CellWidget::invalidStyle);
@@ -135,13 +147,14 @@ void MainWindow::remove_num() {
     determinedList.pop_back();
 }
 
-void MainWindow::receivePuzzleData(vector<CellData> data) {
+void MainWindow::receivePuzzleData(vector<CellStruct> data) {
     reset();
     determinedList = std::move(data);
     for (auto &num: determinedList) {
         boardWidget->getBoard()[num.getRow()][num.getColumn()]->setDecidedNum(num.getNum());
     }
     setFixed();
+    boardData = BoardData(determinedList);
 }
 
 void MainWindow::reset() {

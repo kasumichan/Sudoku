@@ -6,7 +6,7 @@
 #define SUDOKU_PUZZLEMENU_H
 
 #include <QMenu>
-#include "../Message/CellData.h"
+#include "../Message/CellStruct.h"
 #include "../UI/LevelSelectPane.h"
 #include <string>
 #include <vector>
@@ -35,11 +35,11 @@ private slots:
 
     void veryHardPuzzle();
 
-    void receiveCellData(vector<CellData> data);
+    void receiveCellData(vector<CellStruct> data);
 
 signals:
 
-    void sendPuzzleData(vector<CellData> data);
+    void sendPuzzleData(vector<CellStruct> data);
 };
 
 

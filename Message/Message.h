@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <string>
-#include "CellData.h"
+#include "CellStruct.h"
 #include "BoardStatus.h"
 
 using std::vector;
@@ -15,11 +15,11 @@ using std::string;
 
 class Message {
 public:
-    CellData cellData;
+    CellStruct cellData;
     BoardStatus boardStatus;
     string solution;
 
-    Message(const CellData &cellData, BoardStatus boardStatus, string solution);
+    Message(const CellStruct &cellData, BoardStatus boardStatus, string solution);
 
 };
 

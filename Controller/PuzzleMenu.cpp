@@ -12,8 +12,8 @@ PuzzleMenu::PuzzleMenu(QWidget *parent) : QMenu(parent) {
     this->addAction("困难", this, &PuzzleMenu::hardPuzzle);
     this->addAction("专家", this, &PuzzleMenu::veryHardPuzzle);
     levelSelectWidget = new LevelSelectPane(PuzzleDegree::EASY);
-    connect(levelSelectWidget->getOkBtn(), SIGNAL(sendCellData(vector<CellData>)), this,
-            SLOT(receiveCellData(vector<CellData>)));
+    connect(levelSelectWidget->getOkBtn(), SIGNAL(sendCellData(vector<CellStruct>)), this,
+            SLOT(receiveCellData(vector<CellStruct>)));
 }
 
 void PuzzleMenu::easyPuzzle() {
@@ -38,7 +38,7 @@ void PuzzleMenu::veryHardPuzzle() {
 
 }
 
-void PuzzleMenu::receiveCellData(vector<CellData> data) {
+void PuzzleMenu::receiveCellData(vector<CellStruct> data) {
     levelSelectWidget->close();
     emit sendPuzzleData(std::move(data));
 }

@@ -22,7 +22,7 @@
 
 #include "../Message/Message.h"
 #include "BoardPane.h"
-#include "../Game/Board.h"
+#include "../Game/BoardData.h"
 #include "MenuBarPane.h"
 #include "InfoPane.h"
 
@@ -33,7 +33,7 @@ Q_OBJECT
 private:
     BoardPane *boardWidget;
     InfoPane *infoWidget;
-    Board boardData;
+    BoardData boardData;
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
@@ -44,7 +44,7 @@ private:
 
     MenuBarPane *menubar;
 
-    vector<CellData> determinedList;
+    vector<CellStruct> determinedList;
 
 public:
 
@@ -68,7 +68,7 @@ private slots:
 
     void on_begin_clicked();
 
-    void receivePuzzleData(vector<CellData>);
+    void receivePuzzleData(vector<CellStruct>);
 
     void add_num(vector<int> numVec);
 

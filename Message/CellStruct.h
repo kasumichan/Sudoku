@@ -2,11 +2,11 @@
 // Created by 16000 on 2022/4/10.
 //
 
-#ifndef SUDOKU_CELLDATA_H
-#define SUDOKU_CELLDATA_H
+#ifndef SUDOKU_CELLSTRUCT_H
+#define SUDOKU_CELLSTRUCT_H
 
 
-class CellData {
+class CellStruct {
 private:
     int row;
     int column;
@@ -14,14 +14,14 @@ private:
 public:
     int getRow() const;
 
-    CellData();
+    CellStruct();
 
     int getColumn() const;
 
     int getNum() const;
 
-    CellData(int row, int column, int num);
+    CellStruct(int row, int column, int num);
 };
 
 
-#endif //SUDOKU_CELLDATA_H
+#endif //SUDOKU_CELLSTRUCT_H

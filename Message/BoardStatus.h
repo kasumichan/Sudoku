@@ -9,7 +9,8 @@
 enum class BoardStatus {
     VALID,
     INVALID,
-    VAGUE
+    VAGUE,
+    HINT
 };
 
 

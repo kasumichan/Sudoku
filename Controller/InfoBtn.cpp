@@ -30,7 +30,7 @@ void InfoBtn::setLevel(int level) {
     InfoBtn::level = level;
 }
 
-vector<CellData> InfoBtn::readData() {
+vector<CellStruct> InfoBtn::readData() {
     string levelStr;
 
     switch (degree) {
@@ -54,7 +54,7 @@ vector<CellData> InfoBtn::readData() {
     for (int i = 0; i < 81; ++i) {
         levelVec.push_back(levelStr[i] - '0');
     }
-    vector<CellData> cd;
+    vector<CellStruct> cd;
     for (int i = 0; i < 81; ++i) {
         if (levelVec[i] != 0) {
             cd.emplace_back(i / 9, i % 9, levelVec[i]);

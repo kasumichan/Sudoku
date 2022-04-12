@@ -2,8 +2,8 @@
 // Created by 16000 on 2022/4/7.
 //
 
-#ifndef SUDOKU_CELL_H
-#define SUDOKU_CELL_H
+#ifndef SUDOKU_CELLDATA_H
+#define SUDOKU_CELLDATA_H
 
 #include <vector>
 #include <algorithm>
@@ -11,7 +11,7 @@
 using std::vector;
 
 
-class Cell {
+class CellData {
 private:
     int row;
     int col;
@@ -22,17 +22,15 @@ private:
     vector<int> psbNumList;
 
 public:
-    Cell();
+    CellData();
 
 public:
-
     void set(int row, int col, int blkId, int blkLoc, bool decided, int num = 0);
 
     bool isDecided() const;
 
     void rmvNum(int num);
 
-public:
     int getRow() const;
 
     int getCol() const;
@@ -55,4 +53,4 @@ public:
 };
 
 
-#endif //SUDOKU_CELL_H
+#endif //SUDOKU_CELLDATA_H

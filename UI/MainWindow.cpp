@@ -5,6 +5,7 @@
 #include "MainWindow.h"
 
 #include <utility>
+#include <QDebug>
 #include "iostream"
 
 using std::string;
@@ -16,18 +17,15 @@ void MainWindow::initUI() {
     MainWindow::setWindowTitle("数独");
 //    setFixedSize(this->width(), this->height());
 
-    nextBtn->setText("下一步");
-    beginBtn->setText("开始游戏");
-
 
 }
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent), boardData({}) {
     menubar = new MenuBarPane(this);
-    infoWidget = new InfoPane(this);
-    nextBtn = new QPushButton(this);
-    beginBtn = new QPushButton(this);
-    boardWidget = new BoardPane(this);
+    infoPane = new InfoPane(this);
+    boardPane = new BoardPane(this);
+    interactionBtnPane = new InteractionBtnPane(this);
+    fillInBtnPane = new FillInBtnPane(this);
     initUI();
     initLayout();
     addListener();
@@ -39,36 +37,46 @@ void MainWindow::initLayout() {
 
     auto *mainLayout = new QHBoxLayout();
 
-    mainLayout->addWidget(boardWidget);
-    mainLayout->addWidget(infoWidget);
+    auto boardLayout = new QVBoxLayout();
+    boardLayout->addWidget(boardPane);
+    boardLayout->addWidget(fillInBtnPane);
+
+    auto *playLayout = new QVBoxLayout();
+    playLayout->addWidget(infoPane);
+    playLayout->addWidget(interactionBtnPane);
+
+    mainLayout->addLayout(boardLayout);
+    mainLayout->addLayout(playLayout);
 
     layout->addLayout(mainLayout);
 
-    auto *playLayout = new QHBoxLayout();
-    playLayout->addWidget(beginBtn);
-    playLayout->addWidget(nextBtn);
-    layout->addLayout(playLayout);
+//    auto *playLayout = new QHBoxLayout();
+//    playLayout->addWidget(beginBtn);
+//    playLayout->addWidget(nextBtn);
+//    layout->addLayout(playLayout);
     setLayout(layout);
 }
 
 void MainWindow::addListener() {
-    connect(nextBtn, SIGNAL(clicked(bool)), this, SLOT(on_next_clicked()));
-    connect(beginBtn, SIGNAL(clicked(bool)), this, SLOT(on_begin_clicked()));
+    connect(interactionBtnPane, &InteractionBtnPane::hintClicked, this, &MainWindow::nextClicked);
 
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-            connect(boardWidget->getBoard()[i][j], SIGNAL(numRemoved()), this, SLOT(remove_num()));
-            connect(boardWidget->getBoard()[i][j], SIGNAL(numClicked(vector<int>)), this, SLOT(add_num(vector<int>)));
-        }
-    }
-    connect(menubar->getPuzzle(), SIGNAL(sendPuzzleData(vector<CellStruct>)), this,
-            SLOT(receivePuzzleData(vector<CellStruct>)));
+    connect(interactionBtnPane, &InteractionBtnPane::noteClicked, boardPane, &BoardPane::receiveNoteMod);
 
-    connect(menubar, SIGNAL(startNewGame()), this, SLOT(newGameStarted()));
+    connect(interactionBtnPane, &InteractionBtnPane::eraseClicked, boardPane, &BoardPane::receiveErase);
+
+    connect(boardPane, &BoardPane::sendData, this, &MainWindow::modifyList);
+
+    connect(boardPane, &BoardPane::sendErase, this, &MainWindow::erase);
+
+    connect(menubar->getPuzzle(), &PuzzleMenu::sendPuzzleData, this, &MainWindow::receivePuzzleData);
+
+    connect(menubar, &MenuBarPane::startNewGame, this, &MainWindow::newGameStarted);
+
+    connect(fillInBtnPane, &FillInBtnPane::sendNum, boardPane, &BoardPane::receiveNum);
 }
 
 
-void MainWindow::on_next_clicked() {
+void MainWindow::nextClicked() {
 
     if (determinedList.size() == 81) {
         return;
@@ -77,7 +85,7 @@ void MainWindow::on_next_clicked() {
 
     switch (message.boardStatus) {
         case BoardStatus::INVALID:
-            QMessageBox::information(this, "警告", "数独非法");
+            QMessageBox::information(this, "警告", "你之前有地方填错了！");
             break;
         case BoardStatus::VAGUE:
             QMessageBox::information(this, "说明", "数独信息不够或者我太弱了，等我变强一点。");
@@ -89,7 +97,7 @@ void MainWindow::on_next_clicked() {
                     boardData.getBoard()[k][message.excludeData[1].getColumn()].rmvNum(message.excludeData[0].getNum());
                 }
             }
-            infoWidget->setPath(infoWidget->getPath() + message.solution);
+            infoPane->setPath(infoPane->getPath() + message.solution);
             break;
         case BoardStatus::XWING_COL_FOUND:
             for (int k = 0; k < 9; ++k) {
@@ -98,20 +106,22 @@ void MainWindow::on_next_clicked() {
                     boardData.getBoard()[message.excludeData[2].getRow()][k].rmvNum(message.excludeData[0].getNum());
                 }
             }
-            infoWidget->setPath(infoWidget->getPath() + message.solution);
+            infoPane->setPath(infoPane->getPath() + message.solution);
             break;
         case BoardStatus::INTERSECTION_FOUND:
             for (auto data: message.excludeData) {
                 boardData.getBoard()[data.getRow()][data.getColumn()].rmvNum(data.getNum());
             }
-            infoWidget->setPath(infoWidget->getPath() + message.solution);
+            infoPane->setPath(infoPane->getPath() + message.solution);
             break;
         case BoardStatus::VALID:
             determinedList.emplace_back(message.cellData.getRow(), message.cellData.getColumn(),
                                         message.cellData.getNum());
-            boardWidget->getBoard()[message.cellData.getRow()][message.cellData.getColumn()]->setDecidedNum(
+            boardPane->getBoard()[message.cellData.getRow()][message.cellData.getColumn()]->setStyleSheet(
+                    CellWidget::unselectedStyle);
+            boardPane->getBoard()[message.cellData.getRow()][message.cellData.getColumn()]->setDecidedNum(
                     message.cellData.getNum());
-            infoWidget->setPath(infoWidget->getPath() + message.solution);
+            infoPane->setPath(infoPane->getPath() + message.solution);
             break;
         default:
             break;
@@ -124,68 +134,45 @@ void MainWindow::on_next_clicked() {
     }
 }
 
-void MainWindow::on_begin_clicked() {
-    determinedList = {};
-    infoWidget->setPath("");
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-            if (boardWidget->getBoard()[i][j]->getDecidedNum() > 0) {
-                determinedList.emplace_back(i, j, boardWidget->getBoard()[i][j]->getDecidedNum());
-            }
-        }
-    }
-    boardData = BoardData(determinedList);
-    if (!boardData.isValid()) {
-        QMessageBox::information(this, "警告", "数独非法");
-        return;
-    }
-    setFixed();
-}
-
 
 void MainWindow::mouseDoubleClickEvent(QMouseEvent *event) {
     QWidget::mouseDoubleClickEvent(event);
-    boardData = BoardData(determinedList);
-    if (!boardData.isValid()) {
-        boardWidget->getBoard()[determinedList.back().getRow()][determinedList.back().getColumn()]->setStyleSheet(
-                CellWidget::invalidStyle);
-    }
-    if (boardData.isValid() && determinedList.size() == 81) {
-        QMessageBox::information(this, "完成", "太厉害了。");
-    }
 }
 
-void MainWindow::add_num(vector<int> numVec) {
-    determinedList.emplace_back(numVec[0], numVec[1], numVec[2]);
-
-}
-
-void MainWindow::remove_num() {
-    determinedList.pop_back();
-}
 
 void MainWindow::receivePuzzleData(vector<CellStruct> data) {
     reset();
     determinedList = std::move(data);
     for (auto &num: determinedList) {
-        boardWidget->getBoard()[num.getRow()][num.getColumn()]->setDecidedNum(num.getNum());
+        boardPane->getBoard()[num.getRow()][num.getColumn()]->setDecidedNum(num.getNum());
+        boardPane->getBoard()[num.getRow()][num.getColumn()]->setStyleSheet(CellWidget::fixedStyle);
     }
     setFixed();
     boardData = BoardData(determinedList);
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (!boardPane->getBoard()[i][j]->isFixed()) {
+                boardPane->getBoard()[i][j]->setStyleSheet(CellWidget::selectedStyle);
+                boardPane->setPeriStyle(i, j);
+                return;
+            }
+        }
+    }
 }
 
 void MainWindow::reset() {
     determinedList = {};
-    boardWidget->reset();
-    infoWidget->setPath("");
+    boardData = BoardData(determinedList);
+    boardPane->reset();
+    infoPane->setPath("");
 }
 
 void MainWindow::setFixed() {
 
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
-            if (boardWidget->getBoard()[i][j]->getDecidedNum() > 0) {
-                boardWidget->getBoard()[i][j]->setFixed(true);
+            if (boardPane->getBoard()[i][j]->getDecidedNum() > 0) {
+                boardPane->getBoard()[i][j]->setFixed(true);
             }
         }
     }
@@ -193,4 +180,31 @@ void MainWindow::setFixed() {
 
 void MainWindow::newGameStarted() {
     reset();
+}
+
+void MainWindow::modifyList(CellStruct cell) {
+    for (auto num: determinedList) {
+        if (num.getRow() == cell.getRow() && num.getColumn() == cell.getColumn()) {
+            num.setNum(cell.getNum());
+            return;
+        }
+    }
+    determinedList.push_back(cell);
+    boardData = BoardData(determinedList);
+    if (boardData.isValid() && determinedList.size() == 81) {
+        QMessageBox::information(this, "完成", "太厉害了。");
+    }
+}
+
+void MainWindow::erase(CellStruct data) {
+    vector<CellStruct> newList;
+    for (auto a: determinedList) {
+        if (a.getRow() == data.getRow() && a.getColumn() == data.getColumn()) {
+            continue;
+        }
+        newList.push_back(a);
+    }
+    determinedList = newList;
+    boardData = BoardData(determinedList);
+
 }

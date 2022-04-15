@@ -71,10 +71,10 @@ void LevelSelectPane::levelBtnClicked(int i) {
 
 void LevelSelectPane::addListener() {
     for (int i = 0; i < rowCnt * colCnt; ++i) {
-        connect(levelBtn[i], SIGNAL(sendLevel(int)), this, SLOT(levelBtnClicked(int)));
+        connect(levelBtn[i], &InfoBtn::sendLevel, this, &LevelSelectPane::levelBtnClicked);
     }
-    connect(nextBtn, SIGNAL(clicked(bool)), this, SLOT(nextClicked()));
-    connect(lastBtn, SIGNAL(clicked(bool)), this, SLOT(lastClicked()));
+    connect(nextBtn, &QPushButton::clicked, this, &LevelSelectPane::nextClicked);
+    connect(lastBtn, &QPushButton::clicked, this, &LevelSelectPane::lastClicked);
 }
 
 InfoBtn *LevelSelectPane::getOkBtn() const {

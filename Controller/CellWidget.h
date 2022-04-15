@@ -9,6 +9,7 @@
 #include <QMouseEvent>
 #include <iostream>
 #include <vector>
+#include "../Message/CellStruct.h"
 
 using std::vector;
 
@@ -17,10 +18,15 @@ class CellWidget : public QLabel {
 Q_OBJECT
 
 public:
-    const static QString undecidedStyle;
-    const static QString decidedStyle;
-    const static QString fixedStyle;
+    const static QString unselectedStyle;
+    const static QString selectedStyle;
+    const static QString fixedPeriStyle;
+    const static QString unfixedPeriStyle;
+    const static QString sameStyle;
     const static QString invalidStyle;
+    const static QString fixedStyle;
+    const static QString noteStyle;
+    const static QString notePeriStyle;
 
 private:
     int row;
@@ -32,6 +38,21 @@ private:
 
     int width;
     int height;
+
+    bool valid;
+
+    vector<int> noteList;
+
+    bool noteMod;
+public:
+    bool isNoteMod() const;
+
+    void setNoteMod(bool noteMod);
+
+public:
+    bool isValid() const;
+
+    void setValid(bool valid);
 
 public:
 
@@ -61,9 +82,13 @@ public:
 
     void reset();
 
+    vector<int> &getNoteList();
+
+    void setNote();
+
 
 protected:
-    void mouseDoubleClickEvent(QMouseEvent *event) override;
+//    void mouseDoubleClickEvent(QMouseEvent *event) override;
 
     void mousePressEvent(QMouseEvent *event) override;
 
@@ -74,6 +99,8 @@ signals:
     void numClicked(vector<int> num);
 
     void numRemoved();
+
+    void sendPosition(int row, int col);
 
 };
 

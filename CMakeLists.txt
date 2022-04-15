@@ -25,7 +25,7 @@ set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt5::Core Qt5::Gui Qt5::Widgets)
 
-set(APP_ICON_RESOURCE_WINDOWS "Resources/resources.rc")
+set(APP_ICON_RESOURCE_WINDOWS "Resources/resources.rc" UI/InteractionBtnPane.cpp UI/InteractionBtnPane.h UI/FillInBtnPane.cpp UI/FillInBtnPane.h)
 
 file(GLOB SOURCES Controller/*.cpp Game/*.cpp Message/*.cpp Puzzle/*.cpp Resources/*.cpp UI/*.cpp)
 

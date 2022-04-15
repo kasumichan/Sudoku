@@ -17,23 +17,33 @@ PuzzleMenu::PuzzleMenu(QWidget *parent) : QMenu(parent) {
 }
 
 void PuzzleMenu::easyPuzzle() {
+    levelSelectWidget->setWindowIcon(QIcon("Resources/icon/junior.png"));
     levelSelectWidget->reset(PuzzleDegree::EASY);
+    levelSelectWidget->setWindowModality(Qt::ApplicationModal);
     levelSelectWidget->show();
 }
 
 void PuzzleMenu::mediumPuzzle() {
+    levelSelectWidget->setWindowIcon(QIcon("Resources/icon/middle.png"));
     levelSelectWidget->reset(PuzzleDegree::MEDIUM);
+    levelSelectWidget->setWindowModality(Qt::ApplicationModal);
     levelSelectWidget->show();
+
 }
 
 void PuzzleMenu::hardPuzzle() {
+    levelSelectWidget->setWindowIcon(QIcon("Resources/icon/senior.png"));
     levelSelectWidget->reset(PuzzleDegree::HARD);
+    levelSelectWidget->setWindowModality(Qt::ApplicationModal);
     levelSelectWidget->show();
 
 }
 
 void PuzzleMenu::veryHardPuzzle() {
+
+    levelSelectWidget->setWindowIcon(QIcon("Resources/icon/expert.png"));
     levelSelectWidget->reset(PuzzleDegree::VERY_HARD);
+    levelSelectWidget->setWindowModality(Qt::ApplicationModal);
     levelSelectWidget->show();
 
 }

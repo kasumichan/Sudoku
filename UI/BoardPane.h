@@ -12,6 +12,11 @@ class BoardPane : public QWidget {
 Q_OBJECT
 private:
     vector<vector<CellWidget *>> board;
+    bool noteMod;
+    int selectedRow;
+    int selectedCol;
+
+private:
 
 public:
     explicit BoardPane(QWidget *parent = nullptr);
@@ -22,8 +27,29 @@ public:
 
     const vector<vector<CellWidget *>> &getBoard() const;
 
-protected:
-    void paintEvent(QPaintEvent *event) override;
+    void setPeriStyle(int row, int col);
+
+    void setUnselectedStatus();
+
+    void setSameNumStyle(int row, int col);
+
+public slots:
+
+    void receivePos(int row, int col);
+
+    void receiveNum(int num);
+
+    void receiveErase();
+
+    void receiveNoteMod();
+
+signals:
+
+    void sendData(CellStruct data);
+
+    void sendErase(CellStruct data);
+
+
 };
 
 

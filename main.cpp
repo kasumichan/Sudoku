@@ -13,7 +13,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
     ShowWindow(GetConsoleWindow(), SW_HIDE);
     QApplication a(argc, argv);
-    QFile qss("Resources/Diffnes.qss");
+    QFile qss("Resources/qss/Sudoku.qss");
     if (qss.open(QFile::ReadOnly)) {
         QString style = QLatin1String(qss.readAll());
         a.setStyleSheet(style);
@@ -24,9 +24,7 @@ int main(int argc, char *argv[]) {
 //    if()
     w.setWindowIcon(qIcon);
 //    a.setWindowIcon(qIcon);
-    w.setGeometry(200, 100, 800, 600);
-
+//    w.showMaximized();
     w.show();
-
     return a.exec();
 }

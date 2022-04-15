@@ -21,3 +21,7 @@ int CellStruct::getNum() const {
 CellStruct::CellStruct() : row(-1), column(-1), num(-1) {
 
 }
+
+void CellStruct::setNum(int num) {
+    CellStruct::num = num;
+}

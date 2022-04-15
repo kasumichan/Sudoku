@@ -25,22 +25,24 @@
 #include "../Game/BoardData.h"
 #include "MenuBarPane.h"
 #include "InfoPane.h"
+#include "InteractionBtnPane.h"
+#include "FillInBtnPane.h"
 
 using std::vector;
 
 class MainWindow : public QWidget {
 Q_OBJECT
 private:
-    BoardPane *boardWidget;
-    InfoPane *infoWidget;
+    BoardPane *boardPane;
+    InfoPane *infoPane;
+    InteractionBtnPane *interactionBtnPane;
+    FillInBtnPane *fillInBtnPane;
     BoardData boardData;
+
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 private:
-
-    QPushButton *nextBtn;
-    QPushButton *beginBtn;
 
     MenuBarPane *menubar;
 
@@ -64,15 +66,14 @@ private slots:
 
     void newGameStarted();
 
-    void on_next_clicked();
-
-    void on_begin_clicked();
+    void nextClicked();
 
     void receivePuzzleData(vector<CellStruct>);
 
-    void add_num(vector<int> numVec);
+    void modifyList(CellStruct cell);
 
-    void remove_num();
+    void erase(CellStruct data);
+
 
 };
 

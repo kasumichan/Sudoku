@@ -1,3 +1,4 @@
+
 //
 // Created by 16000 on 2022/4/10.
 //
@@ -21,6 +22,8 @@ public:
     int getNum() const;
 
     CellStruct(int row, int column, int num);
+
+    void setNum(int num);
 };
 
 
